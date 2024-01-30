@@ -1,0 +1,20 @@
+.header {
+    margin: 20px;
+}
+
+.header h2 {
+    font-size: 25px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+    margin: 0;
+}
+
+.content button, .content p {
+    margin-bottom: 10px; 
+}
