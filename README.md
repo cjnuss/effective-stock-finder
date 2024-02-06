@@ -8,7 +8,7 @@ docker compose up --build
 # Running Flask
 **1. Go to the proper directory**
 ```
-cd main-project
+cd main-project/src
 ```
 **2. Install Flask**
 ```
