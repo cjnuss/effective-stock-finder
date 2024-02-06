@@ -3,16 +3,13 @@ FROM python:${PYTHON_VERSION}-slim
 
 WORKDIR /usr/src/app
 
-#COPY requirements.txt ./
+# Copy the source code into the container.
+COPY src/ ./src/
+#Copy the requirements file into the container.
+COPY requirements.txt requirements.txt
 #RUN pip install --no-cache-dir -r requirements.txt
 RUN apt update
 RUN apt install python3 -y
-RUN python -m pip install elasticsearch
-# Copy the source code into the container.
-COPY main.py ./
+RUN pip install -r requirements.txt
+#RUN python -m pip install elasticsearch-----done in the requirements.txt
 
-# Expose the port that the application listens on.
-EXPOSE 9200
-
-# Run the application.
-#CMD ["python", "./src/main.py"]
