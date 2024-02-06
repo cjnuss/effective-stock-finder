@@ -18,3 +18,18 @@
 .content button, .content p {
     margin-bottom: 10px; 
 }
+
+.stocks {
+    width: 100%;
+    display: flex;
+}
+
+.stock {
+    display: inline-block;
+    flex-grow: 1;
+    margin: 10px;
+    text-align: center;
+    border-left: 4px solid rgb(99, 182, 99) !important;
+    border: 0.01px solid black;
+    border-radius: 5px;
+}
