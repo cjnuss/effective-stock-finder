@@ -1,2 +1,6 @@
 elasticsearch
 Flask
+openai
+requests
+python-dotenv
+python-edgar
