@@ -3,7 +3,7 @@ import requests
 import test
 
 #TSV file name 
-tsv_file_path = '2024-QTR1.tsv'
+tsv_file_path = './src/2024-QTR1.tsv'
 data = []
 #Headers to access SEC txt files 
 headers = {
