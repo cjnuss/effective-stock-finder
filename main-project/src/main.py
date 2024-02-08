@@ -32,10 +32,10 @@ def GetDataFromGPT():
     random.shuffle(stock_names)
     
     # Select a random number of elements from 1 to 10
-    num_elements = random.randint(1, min(len(stock_names), 10))
+    # num_elements = random.randint(1, min(len(stock_names), 10))
     
     # Take the first num_elements from the scrambled array
-    selected_stock_names = stock_names[:num_elements]
+    selected_stock_names = stock_names[0:8]
     return selected_stock_names
 
 app = Flask(__name__)
