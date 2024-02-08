@@ -1,5 +1,6 @@
 .header {
     margin: 20px;
+    height: 10vh;
 }
 
 .header h2 {
@@ -11,7 +12,7 @@
     flex-direction: column; 
     justify-content: center;
     align-items: center;
-    height: 65vh;
+    height: 60vh;
     margin: 0;
 }
 
@@ -20,16 +21,20 @@
 }
 
 .stocks {
+    height: 30vh;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .stock {
-    display: inline-block;
-    flex-grow: 1;
+    flex: 1 0 23%;
+    min-width: 200px;
     margin: 10px;
     text-align: center;
+    align-items: center;
     border-left: 4px solid rgb(99, 182, 99) !important;
-    border: 0.01px solid black;
+    border: 0.01px solid rgb(184, 184, 184);
     border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
