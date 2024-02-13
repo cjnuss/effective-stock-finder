@@ -1,2 +1,6 @@
 elasticsearch==7.13.1
 Flask
+openai
+requests
+python-dotenv
+python-edgar
