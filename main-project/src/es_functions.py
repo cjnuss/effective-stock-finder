@@ -86,17 +86,19 @@ def make_docs(l, indexname):
     docs = list()
 
     for thing in l:
-        title = thing[0]
-        content = thing[1]
-        link = thing[2]
+        transaction_code = thing[0]
+        footnote = thing[1]
+        issuer_name = thing[2]
+        issuer_trading_symbol = thing[3]
         #add more here and below
         
         doc = dict() 
         doc["_op_type"] = 'index'
         doc["_index"] = indexname
-        doc["title"] = title
-        doc["content"] = content
-        doc["link"] = link
+        doc["transaction code"] = transaction_code
+        doc["footnote"] = footnote
+        doc["issuer name"] = issuer_name
+        doc["issuer trading symbol"] = issuer_trading_symbol
         docs.append(doc)
         
     return docs
