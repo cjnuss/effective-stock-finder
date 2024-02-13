@@ -8,12 +8,12 @@ function replaceButtonWithText() {
     contentContainer.appendChild(newTextElement);
 }
 
-function refreshPage() {
-    document.getElementById("refreshForm").submit();
+function stockRec() {
+    document.getElementById("stock_rec").submit();
 }
 
 window.addEventListener('beforeunload', function() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/refresh_signal');
+    xhr.open('POST', '/refresh');
     xhr.send();
 });

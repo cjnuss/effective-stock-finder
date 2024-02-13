@@ -45,7 +45,7 @@ class Message:
     def change(self, content):
         self.content = content
     
-    def print(self):
+    def getContent(self):
         return self.content
 
 app = Flask(__name__)
@@ -53,18 +53,18 @@ message = Message()
 
 @app.route('/')
 def index():
-    return render_template('index.html', variables=Stock.GetDataFromGPT(), msg=message.print())
+    return render_template('index.html', variables=Stock.GetDataFromGPT(), msg=message.getContent())
 
-@app.route('/route', methods=['POST'])
-def handle_request():
+@app.route('/button_pressed', methods=['POST'])
+def button_pressed():
     if request.form.get('refresh') == 'true':
         message.change("Buy these stocks because blah blah")
-        render_template('index.html', variables=Stock.GetDataFromGPT(), msg=message.print())
+        render_template('index.html', variables=Stock.GetDataFromGPT(), msg=message.getContent())
 
     return redirect(url_for('index'))
 
-@app.route('/refresh_signal', methods=['POST'])
-def refresh_signal():
+@app.route('/refresh', methods=['POST'])
+def refresh():
     message.change("")
     return 'Signal received'
 
