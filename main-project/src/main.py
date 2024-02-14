@@ -1,6 +1,7 @@
 from elasticsearch import Elasticsearch, helpers
 import os
 import re
+import tsv_parser
 
 from es_functions import *
 
@@ -13,4 +14,4 @@ for doc in res["hits"]["hits"]:
   print(doc)
 
 
-print("hello world!")
+print(tsv_parser.tsv_to_data()[0])

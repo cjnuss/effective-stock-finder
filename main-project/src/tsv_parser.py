@@ -2,16 +2,15 @@ import csv
 import requests
 import test
 
-#TSV file name 
-tsv_file_path = './src/2024-QTR1.tsv'
-everything = []
-data = []
-#Headers to access SEC txt files 
-headers = {
-    'User-Agent': 'Stock-Finder aery.2@osu.edu' 
-}
-
 def tsv_to_data():
+    #TSV file name 
+    tsv_file_path = './src/2024-QTR1.tsv'
+    everything = []
+    data = []
+    #Headers to access SEC txt files 
+    headers = {
+    'User-Agent': 'Stock-Finder aery.2@osu.edu' 
+    }
     with open(tsv_file_path, 'r', newline='', encoding='utf-8') as tsvfile:
         reader = csv.reader(tsvfile, delimiter='\t')
         #Iterate through every row in TSV
