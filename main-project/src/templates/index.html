@@ -35,12 +35,28 @@
 
     <div class="stocks" id="stocks">
         {% for variable in variables %}
-            <div class="stock">
-                <div><b>{{ variable.name }}</b></div>
-                <div>{{ variable.short_name }}</div>
-                <div>{{ variable.price }}</div>
-                <div>⬆️ {{ variable.percentage_change }}% ${{ variable.price_change }}</div>
-            </div>
+            {% if variable.price_change|int > 0 %}
+                <div class="stock" id="plus-stock">
+            {% elif variable.price_change|int < 0 %}
+                <div class="stock" id="minus-stock">
+            {% else %}
+                <div class="stock" id="no-change-stock">
+            {% endif %}
+
+                    <div><b>{{ variable.name }}</b></div>
+                    <div>{{ variable.short_name }}</div>
+                    <div>${{ variable.price }}</div>
+
+            {% if variable.price_change|int > 0 %}
+                    <div>⬆
+            {% elif variable.price_change|int < 0 %}
+                    <div>⬇️ 
+            {% else %}
+                    <div>⏹
+            {% endif %}
+                    {{ variable.percentage_change }}% | ${{ variable.price_change }}</div>
+            
+                </div>
         {% endfor %}
     </div>
 </body>

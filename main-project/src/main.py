@@ -12,16 +12,16 @@ class Stock:
     
     def create_stocks_test():
         apple = Stock("Apple, Inc.", "AAPL", "100", "11", "11")
-        microsoft = Stock("Microsoft", "MSFT", "100", "11", "11")
+        microsoft = Stock("Microsoft", "MSFT", "100", "-1", "-1")
         google = Stock("Google", "GOOG", "100", "11", "11")
         amazon = Stock("Amazon", "AMZN", "100", "11", "11")
-        tesla = Stock("Tesla", "TLSA", "100", "11", "11")
+        tesla = Stock("Tesla", "TLSA", "100", "-11", "-11")
         facebook = Stock("Facebook", "FB", "100", "11", "11")
-        nvidia = Stock("NVIDIA", "NNVDA", "100", "11", "11")
+        nvidia = Stock("NVIDIA", "NNVDA", "100", "-11", "-11")
         amd = Stock("AMD", "AMD", "100", "11", "11")
-        netflix = Stock("Netflix", "NFLX", "100", "11", "11")
+        netflix = Stock("Netflix", "NFLX", "100", "0", "0")
         intc = Stock("INTC", "INTC", "100", "11", "11")
-        paypal = Stock("PayPal", "PYPL", "100", "11", "11")
+        paypal = Stock("PayPal", "PYPL", "100", "0", "0")
 
         return [apple, microsoft, google, amazon, tesla, facebook, nvidia, amd, netflix, intc, paypal]
 

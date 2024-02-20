@@ -17,3 +17,22 @@ window.addEventListener('beforeunload', function() {
     xhr.open('POST', '/refresh');
     xhr.send();
 });
+
+var plusStock = document.querySelectorAll("#plus-stock");
+var noChangeStock = document.querySelectorAll("#no-change-stock");
+var minusStock = document.querySelectorAll("#minus-stock");
+
+plusStock.forEach(function(x) {
+    x.style.borderLeftWidth = "4px";
+    x.style.borderLeftColor = "green";
+});
+
+noChangeStock.forEach(function(x) {
+    x.style.borderLeftWidth = "4px";
+    x.style.borderLeftColor = "grey";
+});
+
+minusStock.forEach(function(x) {
+    x.style.borderLeftWidth = "4px";
+    x.style.borderLeftColor = "red";
+});
