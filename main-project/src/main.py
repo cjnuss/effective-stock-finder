@@ -7,11 +7,24 @@ from es_functions import *
 
 es = get_es()
 
+#lol = tsv_parser.tsv_to_data()
 
-res = es.search (index="newsgroup", body={"query": {"match": {"doc":{"query": "pain", "fuzziness": "AUTO"}}}}, size =10000)
+#to clear the current stockinfo index
+#clear_es_index(es, "stockinfo")
+
+#when making a new index
+#create_new_index(es, "stockinfo")
+
+#docs = make_docs(lol, "stockinfo")
+
+#dump_documents(es, docs)
+
+#search by match
+#res = es.search (index="stockinfo", body={"query": {"match": {"footnote": "install"}}})
+
+#search by fuzziness
+res = es.search (index="stockinfo", body={"query": {"match": {"footnote":{"query": "employees", "fuzziness": "AUTO"}}}}, size =10000)
+
 print(len(res["hits"]["hits"]))
 for doc in res["hits"]["hits"]:
   print(doc)
-
-
-print(tsv_parser.tsv_to_data()[0])

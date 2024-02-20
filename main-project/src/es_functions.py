@@ -47,14 +47,15 @@ def get_es():
 def dump_documents(es, docs):
     # print(docs)
     helpers.bulk(es, docs )
-    #print("dump done")
+    print("dump done")
 
 
 
 
 
 
-
+def create_new_index(es, indexname):
+    es.indices.create(index=indexname, ignore=400)
 
 
 
@@ -99,7 +100,10 @@ def make_docs(l, indexname):
         doc["footnote"] = footnote
         doc["issuer name"] = issuer_name
         doc["issuer trading symbol"] = issuer_trading_symbol
-        docs.append(doc)
+        
+        #dont allow for duplicates
+        if doc not in docs:
+            docs.append(doc)
         
     return docs
 
