@@ -15,21 +15,25 @@
 </head>
 <body>
     <div class="header">
-        <h2>Effective Stock Finder</h2>
+        <h2><a href="/">Effective Stock Finder</a></h2>
     </div>
+    
+    {% if not switch %}
+        <div class="content">
+            <!-- passed from Flask --> 
 
-    <div class="content">
-        <!-- passed from Flask --> 
-
-        <form id="stock_rec" action="/button_pressed" method="post">
-            <input type="hidden" name="refresh" value="true">
-            <button type="button" class="btn btn-primary" onclick="stockRec()">Stock Recommendations</button>
-        </form>
-    </div>
+            <form id="stock_rec" action="/button_pressed" method="post">
+                <input type="hidden" name="refresh" value="true">
+                <button type="button" id="rec-button" class="btn btn-primary" onclick="stockRec()">Stock Recommendations</button>
+            </form>
+        </div>
+    {% endif %}
 
     <div class="explanation">
-        {% if msg %}
-            <p>{{ msg }}</p>
+        {% if switch %}
+            {% for variable in variables %}
+                <p>Buy {{ variable.short_name }}, becuase {{ variable.reason }}</p>
+            {% endfor %}
         {% endif %}
     </div>
 

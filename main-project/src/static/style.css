@@ -1,10 +1,15 @@
 .header {
     margin: 20px;
-    height: 10vh;
+    height: auto;
 }
 
 .header h2 {
     font-size: 25px;
+}
+
+.header a {
+    text-decoration: none;
+    color: black;
 }
 
 .content {
