@@ -11,7 +11,7 @@ class Stock:
         self.price_change = price_change
         self.reason = reason
 
-    def recommendations():
+    def random_recommendations():
         apple = Stock("Apple, Inc.", "AAPL", "100", "11", "11", "dfadsfdasfdas.")
         microsoft = Stock("Microsoft", "MSFT", "100", "-1", "-1", "ddsafdasfdasfdsaf.")
         google = Stock("Google", "GOOG", "100", "11", "11", "ddsafdasfdsafsda.")
@@ -23,6 +23,9 @@ class Stock:
         netflix = Stock("Netflix", "NFLX", "100", "0", "0", "dfadsfdsafdsa.")
         intc = Stock("INTC", "INTC", "100", "11", "11", "dfdsafdasfas.")
         paypal = Stock("PayPal", "PYPL", "100", "0", "0", "ddfasfadsfdas.")
+
+        if switch.getContent() == 1:
+            return [nvidia]
 
         stock_names = [apple, microsoft, google, amazon, tesla, facebook, nvidia, amd, netflix, intc, paypal]
         
@@ -52,13 +55,12 @@ switch = Switch()
 
 @app.route('/')
 def index():
-    return render_template('index.html', variables=Stock.recommendations(), switch=switch.getContent())
+    return render_template('index.html', variables=Stock.random_recommendations(), switch=switch.getContent())
 
 @app.route('/button_pressed', methods=['POST'])
 def button_pressed():
     if request.form.get('refresh') == 'true':
         switch.change(1)
-        render_template('index.html', variables=Stock.recommendations(), switch=switch.getContent())
 
     return redirect(url_for('index'))
 

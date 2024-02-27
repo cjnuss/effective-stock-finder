@@ -26,16 +26,14 @@
 }
 
 .stocks {
-    height: 30vh;
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .stock {
-    flex: 1 0 23%;
-    min-width: 200px;
-    margin: 10px;
+    margin: 5px;
+    width: 300px;
     text-align: center;
     align-items: center;
     border: 0.01px solid rgb(184, 184, 184);
