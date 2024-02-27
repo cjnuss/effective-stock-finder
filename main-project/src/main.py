@@ -2,6 +2,7 @@ from elasticsearch import Elasticsearch, helpers
 import os
 import re
 import tsv_parser
+import tsvGenerator
 
 from es_functions import *
 

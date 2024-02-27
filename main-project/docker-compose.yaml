@@ -2,4 +2,6 @@ version: '3.7'
 services:
   pythonapp:
     build: ./
-    command: python3 ./src/main.py
+    command: python3 src/main.py
+    volumes:
+      - ../main-project/src/newfiles:/app/src/newfiles
