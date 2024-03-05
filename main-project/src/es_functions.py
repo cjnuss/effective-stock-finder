@@ -70,8 +70,197 @@ def make_docs(l, indexname):
         doc["issuer name"] = issuer_name
         doc["issuer trading symbol"] = issuer_trading_symbol
         
-        #dont allow for duplicates
-        if doc not in docs:
-            docs.append(doc)
+        #if doc not in docs:
+        docs.append(doc)
         
     return docs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def make_bstrings(l):
+    docs = list()
+    symbols = {}
+
+    for thing in l:
+        transaction_code = thing[0]
+        footnote = thing[1]
+        issuer_name = thing[2]
+        issuer_trading_symbol = thing[3]
+        #add more here and below
+        
+        if issuer_trading_symbol not in symbols:
+            symbols[issuer_trading_symbol] = transaction_code
+        else:
+            symbols[issuer_trading_symbol] += transaction_code
+        
+    
+    for key, value in symbols.items():
+        doc = dict() 
+        doc["_op_type"] = 'index'
+        doc["_index"] = 'bstring'
+        doc["symbol"] = key
+        doc["str"] = value
+        
+        docs.append(doc)
+        
+    return docs
+
+
+
+
+
+def make_bstrings_ws(l):
+    docs = list()
+    symbols = {}
+
+    for thing in l:
+        transaction_code = thing[0]
+        footnote = thing[1]
+        issuer_name = thing[2]
+        issuer_trading_symbol = thing[3]
+        #add more here and below
+        
+        if issuer_trading_symbol not in symbols:
+            symbols[issuer_trading_symbol] = transaction_code
+        else:
+            if transaction_code == 'A':
+                symbols[issuer_trading_symbol] += " " + transaction_code
+            elif transaction_code == 'P':
+                symbols[issuer_trading_symbol] = transaction_code + " " + symbols[issuer_trading_symbol]
+        
+    
+    for key, value in symbols.items():
+        doc = dict() 
+        doc["_op_type"] = 'index'
+        doc["_index"] = 'bstring_ws'
+        doc["symbol"] = key
+        doc["str"] = value
+        
+        docs.append(doc)
+        
+    return docs
+
+
+
+
+
+def get_top_five(es):
+    #this query will get the top 5 stocks based on boosting
+    res = es.search (index="bstring_ws", body={"query": {
+        "query_string": {
+        "query": "(P)^3.5 (A)^4.5",
+        "default_field": "str"
+        }
+    }}, size=5)
+
+
+    top_five = []
+    #prints the top 5 along with the scores
+    print(len(res["hits"]["hits"]))
+    for doc in res["hits"]["hits"]:
+        print(doc["_score"],end="   ")
+        print(doc["_source"])
+        top_five.append(doc['_source']['symbol'])
+    print()
+
+    #info is a list with 5 lists, each of them represents a stock
+    #each of these stock lists will be a list of things "articles" idk what they're called
+    #each article will be a list of 4 things that you gave me 
+    info = []
+    for stock in top_five:
+        res = es.search (index="stockinfo", body={"query": {"match": {"issuer trading symbol": stock}}})
+        documents = []
+        for doc in res["hits"]["hits"]:
+            li = []
+            li.append(doc['_source']['transaction code'])
+            li.append(doc['_source']['footnote'])
+            li.append(doc['_source']['issuer name'])
+            li.append(doc['_source']['issuer trading symbol'])
+            #get rid of duplicates
+            if li not in documents:
+                documents.append(li)
+        info.append(documents)
+    
+    return info
+
+
+
+
+#LINES TO USE LATER IN MAIN OR SOME OTHER THING
+
+#lol = tsv_parser.tsv_to_data()
+
+
+#to clear the current stockinfo index
+#clear_es_index(es, "stockinfo")
+#clear_es_index(es, "bstring")
+
+
+#when making a new index
+#create_new_index(es, "stockinfo")
+
+#docs = make_docs(lol, "stockinfo")
+#docs2 = make_bstrings(lol)
+#docs3 = make_bstrings_ws(lol)
+
+#dump_documents(es, docs)
+
+#search by match
+#res = es.search (index="stockinfo", body={"query": {"match": {"footnote": "employees"}}})
+
+#search by fuzziness
+#res = es.search (index="bstring_ws", body={"query": {"match": {"str":{"query": "A", "fuzziness": "AUTO"}}}}, size =10000)
+
+# res = es.search (index="bstring_ws", body={"query": {
+#     "query_string": {
+#       "query": "(P)^2 (A)",
+#       "default_field": "str"
+#     }
+#   }})
+
+# print(len(res["hits"]["hits"]))
+# for doc in res["hits"]["hits"]:
+#   print(doc)
+  
+
+
+
+
+
+
+
+
+
+
+
+
+# res = es.search (index="bstring_ws", body={
+#   "query": {
+#     "function_score": {
+#       "query": {
+#         "match_all": {}
+#       },
+#       "functions": [
+#         {
+#           "filter": { "match": { "str": "A" } },
+#           "weight": 2.2
+#         },
+#         {
+#           "filter": { "match": { "str": "P" } },
+#           "weight": 2.5
+#         }
+#       ]
+#     }
+#   }
+# }, size=1150)

@@ -4,7 +4,7 @@ import test
 
 def tsv_to_data():
     #TSV file name 
-    tsv_file_path = './src/2024-QTR1.tsv'
+    tsv_file_path = './src/newfiles/2024-QTR1.tsv'
     everything = []
     data = []
     #Headers to access SEC txt files 
