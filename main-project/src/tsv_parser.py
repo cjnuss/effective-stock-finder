@@ -19,7 +19,7 @@ def tsv_to_data():
                 #Get everything from the row of the TSV into a list
                 elements = row[0].split('|')
                 #Filter forms by type and date
-                if elements[2] == "4" and elements[3] == "2024-02-05":
+                if elements[2] == "4" and elements[3] == "2024-03-01":
                     url = "https://www.sec.gov/Archives/" + elements[4]
                     try:
                         #Get txt file
@@ -61,7 +61,9 @@ def tsv_to_data():
                                         data.append(result_text)
                                     else:
                                         data.append("")
-                                    
+                                        
+                                    #append the date to the list
+                                    data.append(elements[3])
                                     #Pass it to a different python file 
                                     everything.append(data)
                                     #Reset the list
