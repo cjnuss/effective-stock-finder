@@ -2,10 +2,6 @@ from elasticsearch import Elasticsearch, helpers
 import os
 import re
 
-
-
-
-
 #this will get you an istance of es (bonsai version)
 def get_es():
     #bonsai = os.environ['BONSAI_URL']
@@ -34,32 +30,14 @@ def get_es():
     es = Elasticsearch(es_header)
     return es
 
-
-
-
-
-
-
-
-
-
 #this will dump whatever is in the docs variable into the database/bonsai/es
 def dump_documents(es, docs):
     # print(docs)
     helpers.bulk(es, docs )
     print("dump done")
 
-
-
-
-
-
 def create_new_index(es, indexname):
     es.indices.create(index=indexname, ignore=400)
-
-
-
-
 
 #clears the bonsai/elasticsearch database of anything with the inputed index
 def clear_es_index(es, indexname):
@@ -70,15 +48,6 @@ def clear_es_index(es, indexname):
     }
     response = es.delete_by_query(index=indexname, body=query)
     
-    
-    
-    
-    
-
-
-
-
-
 #this is how you make the docs variable that you will feed into dump_documents
 #l is a list of lists 
 #the lists should contain strings for each section of the document
@@ -106,7 +75,3 @@ def make_docs(l, indexname):
             docs.append(doc)
         
     return docs
-
-
-
-
