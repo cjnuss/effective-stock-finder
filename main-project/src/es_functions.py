@@ -1,7 +1,10 @@
 from elasticsearch import Elasticsearch, helpers
 import os
 import re
-
+import time
+import tsv_parser
+import tsvGenerator
+from datetime import datetime, timedelta
 
 
 
@@ -68,8 +71,24 @@ def clear_es_index(es, indexname):
             "match_all": {}
         }
     }
-    response = es.delete_by_query(index=indexname, body=query)
+    res = es.delete_by_query(index=indexname, body=query)
+    print("cleared index: {}".format(indexname))
     
+    
+def clear_old_data(es):
+    three_days_ago = datetime.now() - timedelta(days=3)
+    three_days_ago_str = three_days_ago.strftime("%Y-%m-%d")
+    query = {
+        "query": {
+            "range": {
+                "date": {
+                    "lt": three_days_ago_str
+                }
+            }
+        }
+    }
+    res = es.delete_by_query(index='stockinfo', body=query)
+    print("cleared data from before: {}".format(three_days_ago_str))
     
     
     
@@ -91,6 +110,7 @@ def make_docs(l, indexname):
         footnote = thing[1]
         issuer_name = thing[2]
         issuer_trading_symbol = thing[3]
+        date = thing[4]
         #add more here and below
         
         doc = dict() 
@@ -100,6 +120,7 @@ def make_docs(l, indexname):
         doc["footnote"] = footnote
         doc["issuer name"] = issuer_name
         doc["issuer trading symbol"] = issuer_trading_symbol
+        doc["date"] = date
         
         #if doc not in docs:
         docs.append(doc)
@@ -118,48 +139,19 @@ def make_docs(l, indexname):
 
 
 
-
-def make_bstrings(l):
-    docs = list()
-    symbols = {}
-
-    for thing in l:
-        transaction_code = thing[0]
-        footnote = thing[1]
-        issuer_name = thing[2]
-        issuer_trading_symbol = thing[3]
-        #add more here and below
-        
-        if issuer_trading_symbol not in symbols:
-            symbols[issuer_trading_symbol] = transaction_code
-        else:
-            symbols[issuer_trading_symbol] += transaction_code
-        
+def make_bstrings_ws(es):
+    #get all the documents
+    res = es.search (index="stockinfo", body={"query": {"match_all": {}}},size=10000)
     
-    for key, value in symbols.items():
-        doc = dict() 
-        doc["_op_type"] = 'index'
-        doc["_index"] = 'bstring'
-        doc["symbol"] = key
-        doc["str"] = value
-        
-        docs.append(doc)
-        
-    return docs
-
-
-
-
-
-def make_bstrings_ws(l):
     docs = list()
     symbols = {}
 
-    for thing in l:
-        transaction_code = thing[0]
-        footnote = thing[1]
-        issuer_name = thing[2]
-        issuer_trading_symbol = thing[3]
+    for doc in res["hits"]["hits"]:
+        transaction_code = doc['_source']['transaction code']
+        footnote = doc['_source']['footnote']
+        issuer_name = doc['_source']['issuer name']
+        issuer_trading_symbol = doc['_source']['issuer trading symbol']
+        date = doc['_source']['date']
         #add more here and below
         
         if issuer_trading_symbol not in symbols:
@@ -218,12 +210,46 @@ def get_top_five(es):
             li.append(doc['_source']['footnote'])
             li.append(doc['_source']['issuer name'])
             li.append(doc['_source']['issuer trading symbol'])
+            li.append(doc['_source']['date'])
             #get rid of duplicates
             if li not in documents:
                 documents.append(li)
         info.append(documents)
     
     return info
+
+
+
+
+#parse the tsv
+#delete anything that is 3 days or older from the 'stockinfo' index
+#clear the 'bstring_ws' index completely
+#add new documents to the 'stockinfo' index
+#refill the 'bstring_ws' index with P's and A's for each stock
+def update_database():
+    lol = tsv_parser.tsv_to_data()
+    es = get_es()
+    
+    clear_old_data(es)
+    clear_es_index(es, "bstring_ws")
+    
+    docs = make_docs(lol, "stockinfo")
+    dump_documents(es, docs)
+    
+    es = get_es()
+    
+    docs3 = make_bstrings_ws(es)
+    dump_documents(es, docs3)
+    
+
+
+
+
+
+
+
+
+
 
 
 
@@ -235,7 +261,7 @@ def get_top_five(es):
 
 #to clear the current stockinfo index
 #clear_es_index(es, "stockinfo")
-#clear_es_index(es, "bstring")
+#clear_es_index(es, "bstring_ws")
 
 
 #when making a new index
