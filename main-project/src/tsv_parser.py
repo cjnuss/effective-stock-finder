@@ -62,7 +62,8 @@ def tsv_to_data():
                                         data.append(result_text)
                                     else:
                                         data.append("")
-                                    #add date to the end of the info
+                                        
+                                    #append the date to the list
                                     data.append(elements[3])
                                     #Pass it to a different python file 
                                     everything.append(data)

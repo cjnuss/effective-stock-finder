@@ -37,32 +37,14 @@ def get_es():
     es = Elasticsearch(es_header)
     return es
 
-
-
-
-
-
-
-
-
-
 #this will dump whatever is in the docs variable into the database/bonsai/es
 def dump_documents(es, docs):
     # print(docs)
     helpers.bulk(es, docs )
     print("dump done")
 
-
-
-
-
-
 def create_new_index(es, indexname):
     es.indices.create(index=indexname, ignore=400)
-
-
-
-
 
 #clears the bonsai/elasticsearch database of anything with the inputed index
 def clear_es_index(es, indexname):
