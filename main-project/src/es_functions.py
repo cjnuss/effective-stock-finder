@@ -3,7 +3,8 @@ import os
 import re
 import time
 import tsv_parser
-import tsvGenerator
+#Comment this out when generator is not being used
+#import tsvGenerator
 from datetime import datetime, timedelta
 
 

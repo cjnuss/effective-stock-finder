@@ -1,7 +1,8 @@
 from elasticsearch import Elasticsearch, helpers
 import os
 import re
-import tsvGenerator
+#Comment this out if its not being used
+#import tsvGenerator
 
 from es_functions import *
 
@@ -30,11 +31,11 @@ top5stocks = get_top_five(es)
 
 #here is me printing out the results, you can do whatever you want with them
 #this is just to show what the format of the variable top5stocks is like
-for stock in top5stocks:
+#for stock in top5stocks:
   #the stock variable is a list of documents
-  for document in stock:
+ # for document in stock:
     #a document is the list of information that has 4 strings in it
-    print(document, end='\n\n')
-  print('\n\n\n\n')
+  #  print(document, end='\n\n')
+  #print('\n\n\n\n')
     
   
