@@ -1,0 +1,22 @@
+name: Daily Script Execution
+on:
+    schedule:
+      - cron: '0 0 * * *' 
+
+jobs:
+    run_script:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Check out code
+          uses: actions/checkout@v2
+  
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.7'
+  
+        - name: Install dependencies
+          run: pip install -r requirements.txt
+  
+        - name: Run script
+          run: python3 main-project/src/tsvGenerator.py
