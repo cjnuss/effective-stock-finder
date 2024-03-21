@@ -161,30 +161,30 @@ def make_bstrings_ws(es):
 
 
 
-def get_top_five(es):
-    #this query will get the top 5 stocks based on boosting
+def get_top_ten(es):
+    #this query will get the top 10 stocks based on boosting
     res = es.search (index="bstring_ws", body={"query": {
         "query_string": {
         "query": "(P)^3.5 (A)^4.5",
         "default_field": "str"
         }
-    }}, size=5)
+    }}, size=10)
 
 
-    top_five = []
-    #prints the top 5 along with the scores
+    top_ten = []
+    #prints the top 10 along with the scores
     print(len(res["hits"]["hits"]))
     for doc in res["hits"]["hits"]:
         print(doc["_score"],end="   ")
         print(doc["_source"])
-        top_five.append(doc['_source']['symbol'])
+        top_ten.append(doc['_source']['symbol'])
     print()
 
-    #info is a list with 5 lists, each of them represents a stock
+    #info is a list with 10 lists, each of them represents a stock
     #each of these stock lists will be a list of things "articles" idk what they're called
     #each article will be a list of 4 things that you gave me 
     info = []
-    for stock in top_five:
+    for stock in top_ten:
         res = es.search (index="stockinfo", body={"query": {"match": {"issuer trading symbol": stock}}})
         documents = []
         for doc in res["hits"]["hits"]:

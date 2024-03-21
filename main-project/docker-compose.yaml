@@ -2,6 +2,8 @@ version: '3.7'
 services:
   pythonapp:
     build: ./
+    ports: 
+      - "5000:5000"
     command: python3 src/main.py
     volumes:
       - ../main-project/src/newfiles:/app/src/newfiles

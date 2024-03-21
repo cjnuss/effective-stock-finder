@@ -1,6 +1,7 @@
 import edgar
 import multiprocessing
 import os
+from es_functions import *
 
 #Uses set difference to take a difference of lines
 def process_lines(new_lines, old_lines, output_queue):
@@ -67,3 +68,5 @@ if os.path.exists('./src/newfiles/2024-QTR1_old.tsv'):
     os.remove('./src/newfiles/2024-QTR1_old.tsv')
 if os.path.exists('./src/newfiles/2024-QTR1.tsv'):
     os.rename('./src/newfiles/2024-QTR1.tsv', './src/newfiles/2024-QTR1_old.tsv')
+
+update_database()

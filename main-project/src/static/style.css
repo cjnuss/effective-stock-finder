@@ -1,36 +1,42 @@
-.header {
-    margin: 20px;
-    height: auto;
+/* Sets styling for the entire body */
+body{
+    position: relative;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
-.header h2 {
-    font-size: 25px;
-}
-
-.header a {
-    text-decoration: none;
-    color: black;
-}
-
+/* Sets styling for stuff inside content div */
 .content {
     display: flex;
     flex-direction: column; 
     justify-content: center;
     align-items: center;
-    height: 45vh;
+    height: 25vh;
     margin: 0;
 }
 
+/* Sets styling for stuff inside content div */
 .content button, .content p {
     margin-bottom: 10px; 
 }
 
+/* Sets styling for stuff inside stocks div */
 .stocks {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
+/* Sets styling for stuff inside indexes div */
+.indexes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Sets styling for each individual stock */
 .stock {
     margin: 5px;
     width: 300px;
@@ -41,7 +47,107 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Sets styling for each individual index */
+.index {
+    margin: 5px;
+    margin-bottom: 20px;
+    width: 300px;
+    text-align: center;
+    align-items: center;
+    border: 0.01px solid rgb(184, 184, 184);
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sets styling for explanation div */
 .explanation {
     text-align: center;
     font-size: 20px;
+    margin: 20px 0;
 }
+
+/* Sets styling for the top navbar */
+.navbar {
+    display: flex; 
+    justify-content: flex-end;
+    color: white;
+    padding: 20px, 10%; 
+    background-color: #24252A; 
+    height: 80px;
+}
+
+/* Sets styling for the back button */
+#back-button {
+    background-color: rgba(0, 136, 169, 1);
+    color: white;
+    padding: 8px 16px; 
+    border: none; 
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: all 0.3s ease 0s;
+}
+
+/* Sets styling for the button to switch between light and dark modes */
+#dark-mode-button {
+    background-color: rgba(0, 136, 169, 1);
+    color: white;
+    padding: 8px 16px; 
+    border: none; 
+    cursor: pointer;
+    margin: 0 10px;
+    border-radius: 50px;
+    transition: all 0.3s ease 0s;
+}
+
+/* Changes color of the back button and mode switch button when hovered over */
+#dark-mode-button:hover,
+#back-button:hover {
+    background-color: rgba(0, 136, 169, 0.8);
+}
+
+/* Sets styling for the entire page if user switches to dark mode */
+body.dark-mode {
+    background-color: black; 
+    color: #ffffff; 
+}
+
+/* Sets styling for the text in navbar */
+.navbar-title {
+    margin-left: 20px; 
+}
+
+/* Sets styling for the buttons in navbar */
+.navbar-buttons {
+    display: flex; 
+    align-items: center; 
+}
+
+/* Sets styling for the container with the plot */
+.plot-container {
+    margin: 50px auto; 
+    max-width: 60%; 
+}
+
+/* Sets styling for the plot itself */
+#plot {
+    height: 500px; 
+}
+
+/* Sets styling for the navbar at the bottom of the page */
+.bottom-navbar {
+    position: fixed;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    color: white;
+    background-color: #24252A; 
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 0px;
+    align-items: center;
+    justify-content: space-around;
+}
+

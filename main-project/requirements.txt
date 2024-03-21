@@ -4,3 +4,5 @@ openai
 requests
 python-dotenv
 python-edgar
+pandas
+yfinance
