@@ -16,7 +16,7 @@ jobs:
             python-version: '3.7'
   
         - name: Install dependencies
-          run: pip install -r requirements.txt
+          run: pip install -r main-project/requirements.txt
   
         - name: Run script
           run: python3 main-project/src/tsvGenerator.py
