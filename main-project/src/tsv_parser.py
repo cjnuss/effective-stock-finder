@@ -71,7 +71,7 @@ def process_row(row, headers):
 def tsv_to_data():
 
     #TSV file name 
-    tsv_file_path = './src/newfiles/latest.tsv'
+    tsv_file_path = 'main-project/src/newfiles/latest.tsv'
     everything = []
     #Headers to access SEC txt files 
     headers = {
