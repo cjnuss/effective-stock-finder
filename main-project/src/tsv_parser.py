@@ -1,6 +1,7 @@
 import csv
 import requests
 import multiprocessing
+import yfinance as yf
 
 #Gets the txt file content 
 def get_response(url, headers):
@@ -91,6 +92,13 @@ def tsv_to_data():
             #Executes the function as a seperate process and makes sure it ends before everything is returned 
             result = pool.apply(process_row, args=(row[0], headers))
             if result and result != []:
-                everything.append(result)
+                ticker = result[3]
+                if ticker != "":
+                    try:
+                        response = yf.Ticker("ticker")
+                        price = response.history(period="1d")["Close"].iloc[-1]
+                        everything.append(result)
+                    except Exception as e:
+                        print(f"An error occurred: {str(e)}")
 
     return everything
