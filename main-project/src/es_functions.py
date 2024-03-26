@@ -140,10 +140,11 @@ def make_bstrings_ws(es):
         if issuer_trading_symbol not in symbols:
             symbols[issuer_trading_symbol] = transaction_code
         else:
-            if transaction_code == 'A':
-                symbols[issuer_trading_symbol] += " " + transaction_code
-            elif transaction_code == 'P':
-                symbols[issuer_trading_symbol] = transaction_code + " " + symbols[issuer_trading_symbol]
+            symbols[issuer_trading_symbol] += " " + transaction_code
+            # if transaction_code == 'A':
+            #     symbols[issuer_trading_symbol] += " " + transaction_code
+            # elif transaction_code == 'P':
+            #     symbols[issuer_trading_symbol] = transaction_code + " " + symbols[issuer_trading_symbol]
         
     
     for key, value in symbols.items():
@@ -165,7 +166,7 @@ def get_top_ten(es):
     #this query will get the top 10 stocks based on boosting
     res = es.search (index="bstring_ws", body={"query": {
         "query_string": {
-        "query": "(P)^3.5 (A)^4.5",
+        "query": "(P)^3.5 (S)^4.5",
         "default_field": "str"
         }
     }}, size=10)
