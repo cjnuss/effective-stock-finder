@@ -95,7 +95,7 @@ def tsv_to_data():
                 ticker = result[3]
                 if ticker != "":
                     try:
-                        response = yf.Ticker("ticker")
+                        response = yf.Ticker(ticker)
                         price = response.history(period="1d")["Close"].iloc[-1]
                         everything.append(result)
                     except Exception as e:
