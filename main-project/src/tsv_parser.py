@@ -92,7 +92,7 @@ def tsv_to_data():
             result = pool.apply(process_row, args=(row[0], headers))
             if result and result != []:
                 ticker = result[3]
-                if ticker != "":
+                if ticker != "NONE":
                     everything.append(result)
 
     return everything
