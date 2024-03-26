@@ -36,7 +36,7 @@ def process_row(row, headers):
             if start_pos != -1 and end_pos != -1:
                 result_text = response[start_pos + len("<transactionCode>"):end_pos].strip()
                 #Filter transaction code A
-                if result_text == "A" or result_text == "P":
+                if result_text == "S" or result_text == "P":
                     data.append(result_text)
 
                     #Get the footnotes 
