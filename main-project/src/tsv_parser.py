@@ -92,9 +92,8 @@ def tsv_to_data():
             result = pool.apply(process_row, args=(row[0], headers))
             if result and result != []:
                 ticker = result[3]
-                if ticker != "NONE":
-                    everything.append(result)
-                if not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
+                footnotes = result[1]
+                if ticker != "NONE" and not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
                     everything.append(result)
                     
     return everything
