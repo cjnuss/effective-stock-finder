@@ -94,5 +94,7 @@ def tsv_to_data():
                 ticker = result[3]
                 if ticker != "NONE":
                     everything.append(result)
-
+                if not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
+                    everything.append(result)
+                    
     return everything
