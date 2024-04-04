@@ -1,7 +1,3 @@
-import yfinance as yf
+import edgar
 
-try:
-    response = yf.Ticker("ticker")
-    print(response)
-except Exception as e:
-    print(f"An error occurred: {str(e)}")
+edgar.download_index("main-project/src/newfiles", 2024, "Stock-Finder aery.2@osu.edu", skip_all_present_except_last=False)

@@ -10,8 +10,8 @@ def process_lines(new_lines, old_lines, output_queue):
     output_queue.put(new_lines_set)
 
 #Removes the last generated tsv file and the current updated file to replace
-if os.path.exists('main-project/src/newfiles/2024-QTR1.tsv'):
-    os.remove('main-project/src/newfiles/2024-QTR1.tsv')
+if os.path.exists('main-project/src/newfiles/2024-QTR2.tsv'):
+    os.remove('main-project/src/newfiles/2024-QTR2.tsv')
 if os.path.exists('main-project/src/newfiles/latest.tsv'):
     os.remove('main-project/src/newfiles/latest.tsv')
 
@@ -21,7 +21,7 @@ edgar.download_index("main-project/src/newfiles", 2024, "Stock-Finder aery.2@osu
 
 #Opens the old file and new file to take a difference
 with open('main-project/src/newfiles/2024-QTR1_old.tsv', 'r') as old_file, \
-         open('main-project/src/newfiles/2024-QTR1.tsv', 'r') as new_file:
+         open('main-project/src/newfiles/2024-QTR2.tsv', 'r') as new_file:
 
     #Gets all the lines in both files and converts old one to a set for easy manipulation
     old_lines = set(old_file.readlines())
@@ -64,9 +64,9 @@ with open('main-project/src/newfiles/2024-QTR1_old.tsv', 'r') as old_file, \
             output_file.write(line)
 
 #Removes the old file and renames the new file to old file 
-if os.path.exists('main-project/src/newfiles/2024-QTR1_old.tsv'):
-    os.remove('main-project/src/newfiles/2024-QTR1_old.tsv')
-if os.path.exists('main-project/src/newfiles/2024-QTR1.tsv'):
-    os.rename('main-project/src/newfiles/2024-QTR1.tsv', 'main-project/src/newfiles/2024-QTR1_old.tsv')
+if os.path.exists('main-project/src/newfiles/2024-QTR2_old.tsv'):
+    os.remove('main-project/src/newfiles/2024-QTR2_old.tsv')
+if os.path.exists('main-project/src/newfiles/2024-QTR2.tsv'):
+    os.rename('main-project/src/newfiles/2024-QTR2.tsv', 'main-project/src/newfiles/2024-QTR2_old.tsv')
 
 update_database()
