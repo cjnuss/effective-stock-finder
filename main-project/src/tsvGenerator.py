@@ -20,7 +20,7 @@ print("Generating TSV file...")
 edgar.download_index("main-project/src/newfiles", 2024, "Stock-Finder aery.2@osu.edu", skip_all_present_except_last=False)
 
 #Opens the old file and new file to take a difference
-with open('main-project/src/newfiles/2024-QTR1_old.tsv', 'r') as old_file, \
+with open('main-project/src/newfiles/2024-QTR2_old.tsv', 'r') as old_file, \
          open('main-project/src/newfiles/2024-QTR2.tsv', 'r') as new_file:
 
     #Gets all the lines in both files and converts old one to a set for easy manipulation
