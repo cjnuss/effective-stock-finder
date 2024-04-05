@@ -63,7 +63,7 @@ def getInformation(top5stocks):
     #Loops through the formatted footnotes and has Open AI analyze them
     for user_input in input_list:
         #Comment this out when not in use to avoid hitting rate limits
-        #prompt = process_input(prompt, user_input)
+        prompt = process_input(prompt, user_input)
         #Appends the results to a different list, change the parameter to prompt if you uncomment the line above
-        descriptions.append("Placeholder")
+        descriptions.append(prompt)
     return tickers, descriptions, company_names

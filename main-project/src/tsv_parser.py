@@ -29,6 +29,7 @@ def process_row(row, headers):
         url = "https://www.sec.gov/Archives/" + elements[4]
         #Get txt file
         response = get_response(url, headers)
+        iterationPos = 0
         if response != "":
             #Get the transaction code 
             start_pos = response.find("<transactionCode>")
@@ -36,9 +37,10 @@ def process_row(row, headers):
             if start_pos != -1 and end_pos != -1:
                 result_text = response[start_pos + len("<transactionCode>"):end_pos].strip()
                 #Filter transaction code A
+                transactionSymbol = result_text
                 if result_text == "S" or result_text == "P":
                     data.append(result_text)
-
+                    
                     #Get the footnotes 
                     start_pos = response.find("<footnotes>")
                     end_pos = response.find("</footnotes>")
@@ -65,6 +67,50 @@ def process_row(row, headers):
                         data.append(result_text)
                     else:
                         data.append("")
+                    
+                    #Append the stock price to the list
+                    #This will get us the <value> tag we want
+                    valueFind = response.find("<transactionPricePerShare>")
+                    start_pos = response.find("<value>", valueFind)
+                    end_pos = response.find("</value>", valueFind)
+                    #Set iteration pos here so we can find if there are more transaction codes
+                    iterationPos = end_pos
+                    if start_pos != -1 and end_pos != -1:
+                        result_text = response[start_pos + len("<value>"):end_pos].strip()
+                        data.append(result_text)
+                    else:
+                        data.append("")
+
+                    #Append the total volme of shares to the list - just total the number of shares not the number of P's
+                    #this first part is if there is only one transaction code. Base case
+                    if(response.find("<transactionCode>" + transactionSymbol, iterationPos) == -1):  #No more P transascation codes meaning we only run once
+                        valueFindShares = response.find("<transactionShares>")
+                        start_pos = response.find("<value>", valueFindShares)
+                        end_pos = response.find("</value>", valueFindShares)
+                        if start_pos != -1 and end_pos != -1:
+                            result_text = response[start_pos + len("<value>"):end_pos].strip()
+                            data.append(result_text)
+                        else:
+                            data.append("")
+                    #This case will handle multiple transaction codes and sum up the total shares
+                    else:
+                        totalShares = 0
+                        #need to set iteration to 0 to start from the beginning
+                        iterationPos = response.find("<transactionCode>"+ transactionSymbol)   #make sure we are getting the right transaction code for first item
+                        while(response.find("<transactionCode>"+ transactionSymbol, iterationPos) != -1):
+                            valueFindShares = response.find("<transactionShares>", iterationPos)
+                            start_pos = response.find("<value>", valueFindShares)
+                            end_pos = response.find("</value>", valueFindShares)
+                            
+                            if start_pos != -1 and end_pos != -1:
+                                result_text = response[start_pos + len("<value>"):end_pos].strip()
+                                totalShares += int(result_text)
+
+                            #Set the iteration position to the end position of the last value tag, now we are at the end of the transaction code
+                            iterationPos = end_pos
+
+                        data.append(str(totalShares))
+
                     data.append(elements[3])
     return data
 
