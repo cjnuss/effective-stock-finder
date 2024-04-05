@@ -104,7 +104,7 @@ def process_row(row, headers):
                             
                             if start_pos != -1 and end_pos != -1:
                                 result_text = response[start_pos + len("<value>"):end_pos].strip()
-                                totalShares += int(result_text)
+                                totalShares += int(float(result_text))
 
                             #Set the iteration position to the end position of the last value tag, now we are at the end of the transaction code
                             iterationPos = end_pos
