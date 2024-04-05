@@ -93,7 +93,9 @@ def make_docs(l, indexname):
         footnote = thing[1]
         issuer_name = thing[2]
         issuer_trading_symbol = thing[3]
-        date = thing[4]
+        price = thing[4]
+        volume = thing[5]
+        date = thing[6]
         #add more here and below
         
         doc = dict() 
@@ -103,6 +105,8 @@ def make_docs(l, indexname):
         doc["footnote"] = footnote
         doc["issuer name"] = issuer_name
         doc["issuer trading symbol"] = issuer_trading_symbol
+        doc["price"] = price
+        doc["volume"] = volume
         doc["date"] = date
         
         #if doc not in docs:
@@ -128,23 +132,39 @@ def make_bstrings_ws(es):
     
     docs = list()
     symbols = {}
+    #used for price and stuff
+    symbolsP = {}
+    symbolsS = {}
 
     for doc in res["hits"]["hits"]:
         transaction_code = doc['_source']['transaction code']
         footnote = doc['_source']['footnote']
         issuer_name = doc['_source']['issuer name']
         issuer_trading_symbol = doc['_source']['issuer trading symbol']
+        price = doc['_source']['price']
+        volume = doc['_source']['volume']
         date = doc['_source']['date']
         #add more here and below
         
+        #building str
         if issuer_trading_symbol not in symbols:
             symbols[issuer_trading_symbol] = transaction_code
         else:
             symbols[issuer_trading_symbol] += " " + transaction_code
-            # if transaction_code == 'A':
-            #     symbols[issuer_trading_symbol] += " " + transaction_code
-            # elif transaction_code == 'P':
-            #     symbols[issuer_trading_symbol] = transaction_code + " " + symbols[issuer_trading_symbol]
+        
+        product = int(price)*int(volume)    
+        #building P  
+        if transaction_code == 'P':
+            if issuer_trading_symbol not in symbolsP:
+                symbolsP[issuer_trading_symbol] = product
+            else:
+                symbolsP[issuer_trading_symbol] += product
+        #building S
+        if transaction_code == 'S':
+            if issuer_trading_symbol not in symbolsS:
+                symbolsS[issuer_trading_symbol] = product
+            else:
+                symbolsS[issuer_trading_symbol] += product
         
     
     for key, value in symbols.items():
@@ -153,6 +173,17 @@ def make_bstrings_ws(es):
         doc["_index"] = 'bstring_ws'
         doc["symbol"] = key
         doc["str"] = value
+        if key in symbolsP and key in symbolsS:
+            doc["PtoS_ratio"] = symbolsP[key]/symbolsS[key]
+        elif key in symbolsP:
+            doc["PtoS_ratio"] = 1000000
+        elif key in symbolsS:
+            doc["PtoS_ratio"] = -1
+        
+        if key in symbolsP:
+            doc["Pamount"] = symbolsP[key]
+        else:
+            doc["Pamount"] = 0
         
         docs.append(doc)
         
