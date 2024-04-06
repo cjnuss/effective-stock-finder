@@ -78,8 +78,9 @@ def process_row(row, headers):
                             value_end_pos = response.find("</value>", valueFind, end_pos)
                             if value_start_pos != -1 and value_end_pos != -1:
                                 result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
-                                price = result_text
-                                break
+                                if result_text.replace('.', '', 1).isdigit():
+                                    price = result_text
+                                    break
 
                         valueFind = response.find("<transactionPricePerShare>", end_pos)
                     
@@ -95,8 +96,9 @@ def process_row(row, headers):
                             value_end_pos = response.find("</value>", valueFind, end_pos)
                             if value_start_pos != -1 and value_end_pos != -1:
                                 result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
-                                volume += float(result_text)
-                                
+                                if result_text.replace('.', '', 1).isdigit():
+                                    volume += float(result_text)
+
                         valueFind = response.find("<transactionShares>", end_pos)
                     
                     data.append(str(volume))
