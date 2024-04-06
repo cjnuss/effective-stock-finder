@@ -152,7 +152,7 @@ def make_bstrings_ws(es):
         else:
             symbols[issuer_trading_symbol] += " " + transaction_code
         
-        product = int(price)*int(volume)    
+        product = float(price)*float(volume)    
         #building P  
         if transaction_code == 'P':
             if issuer_trading_symbol not in symbolsP:
