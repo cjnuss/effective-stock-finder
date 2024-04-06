@@ -71,13 +71,20 @@ def process_row(row, headers):
                     #Append the stock price to the list
                     #This will get us the <value> tag we want
                     valueFind = response.find("<transactionPricePerShare>")
-                    start_pos = response.find("<value>", valueFind)
-                    end_pos = response.find("</value>", valueFind)
-                    #Set iteration pos here so we can find if there are more transaction codes
-                    iterationPos = end_pos
-                    if start_pos != -1 and end_pos != -1:
-                        result_text = response[start_pos + len("<value>"):end_pos].strip()
-                        data.append(result_text)
+                    if valueFind != -1:
+                        endValue = response.find("</transactionPricePerShare>", valueFind)
+                        if endValue != -1:
+                            start_pos = response.find("<value>", valueFind)
+                            end_pos = response.find("</value>", valueFind)
+                            #Set iteration pos here so we can find if there are more transaction codes
+                            iterationPos = end_pos
+                            if start_pos != -1 and end_pos != -1:
+                                result_text = response[start_pos + len("<value>"):end_pos].strip()
+                                data.append(result_text)
+                            else:
+                                data.append("")
+                        else:
+                            data.append("")
                     else:
                         data.append("")
 
