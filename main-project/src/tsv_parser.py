@@ -132,6 +132,7 @@ def tsv_to_data():
                 ticker = result[3]
                 footnotes = result[1]
                 if ticker != "NONE" and not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
+                    print(result)
                     everything.append(result)
                     
     return everything
