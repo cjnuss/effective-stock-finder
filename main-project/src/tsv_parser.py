@@ -29,7 +29,6 @@ def process_row(row, headers):
         url = "https://www.sec.gov/Archives/" + elements[4]
         #Get txt file
         response = get_response(url, headers)
-        iterationPos = 0
         if response != "":
             #Get the transaction code 
             start_pos = response.find("<transactionCode>")
@@ -37,7 +36,6 @@ def process_row(row, headers):
             if start_pos != -1 and end_pos != -1:
                 result_text = response[start_pos + len("<transactionCode>"):end_pos].strip()
                 #Filter transaction code A
-                transactionSymbol = result_text
                 if result_text == "S" or result_text == "P":
                     data.append(result_text)
                     
@@ -71,52 +69,37 @@ def process_row(row, headers):
                     #Append the stock price to the list
                     #This will get us the <value> tag we want
                     valueFind = response.find("<transactionPricePerShare>")
-                    if valueFind != -1:
-                        endValue = response.find("</transactionPricePerShare>", valueFind)
-                        if endValue != -1:
-                            start_pos = response.find("<value>", valueFind)
-                            end_pos = response.find("</value>", valueFind)
-                            #Set iteration pos here so we can find if there are more transaction codes
-                            iterationPos = end_pos
-                            if start_pos != -1 and end_pos != -1:
-                                result_text = response[start_pos + len("<value>"):end_pos].strip()
-                                data.append(result_text)
-                            else:
-                                data.append("")
-                        else:
-                            data.append("")
-                    else:
-                        data.append("")
+                    price = ""
 
-                    #Append the total volme of shares to the list - just total the number of shares not the number of P's
-                    #this first part is if there is only one transaction code. Base case
-                    if(response.find("<transactionCode>" + transactionSymbol, iterationPos) == -1):  #No more P transascation codes meaning we only run once
-                        valueFindShares = response.find("<transactionShares>")
-                        start_pos = response.find("<value>", valueFindShares)
-                        end_pos = response.find("</value>", valueFindShares)
-                        if start_pos != -1 and end_pos != -1:
-                            result_text = response[start_pos + len("<value>"):end_pos].strip()
-                            data.append(result_text)
-                        else:
-                            data.append("")
-                    #This case will handle multiple transaction codes and sum up the total shares
-                    else:
-                        totalShares = 0
-                        #need to set iteration to 0 to start from the beginning
-                        iterationPos = response.find("<transactionCode>"+ transactionSymbol)   #make sure we are getting the right transaction code for first item
-                        while(response.find("<transactionCode>"+ transactionSymbol, iterationPos) != -1):
-                            valueFindShares = response.find("<transactionShares>", iterationPos)
-                            start_pos = response.find("<value>", valueFindShares)
-                            end_pos = response.find("</value>", valueFindShares)
-                            
-                            if start_pos != -1 and end_pos != -1:
-                                result_text = response[start_pos + len("<value>"):end_pos].strip()
-                                totalShares += float(result_text)
+                    while valueFind != -1:
+                        end_pos = response.find("</transactionPricePerShare>", valueFind)
+                        if end_pos != -1:
+                            value_start_pos = response.find("<value>", valueFind, end_pos)
+                            value_end_pos = response.find("</value>", valueFind, end_pos)
+                            if value_start_pos != -1 and value_end_pos != -1:
+                                result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
+                                price = result_text
+                                break
 
-                            #Set the iteration position to the end position of the last value tag, now we are at the end of the transaction code
-                            iterationPos = end_pos
+                        valueFind = response.find("<transactionPricePerShare>", end_pos)
+                    
+                    data.append(price)
 
-                        data.append(str(totalShares))
+                    valueFind = response.find("<transactionShares>")
+                    volume = 0
+
+                    while valueFind != -1:
+                        end_pos = response.find("</transactionShares>", valueFind)
+                        if end_pos != -1:
+                            value_start_pos = response.find("<value>", valueFind, end_pos)
+                            value_end_pos = response.find("</value>", valueFind, end_pos)
+                            if value_start_pos != -1 and value_end_pos != -1:
+                                result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
+                                volume += float(result_text)
+                                
+                        valueFind = response.find("<transactionShares>", end_pos)
+                    
+                    data.append(str(volume))
 
                     data.append(elements[3])
     return data
