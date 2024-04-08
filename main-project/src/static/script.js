@@ -10,20 +10,17 @@ var minusStock = document.querySelectorAll("#minus-stock, #minus-index");
 
 //Gives green left border to stocks that are up 
 plusStock.forEach(function(x) {
-    x.style.borderLeftWidth = "4px";
-    x.style.borderLeftColor = "green";
+    x.style.backgroundColor = "#31cc5a";
 });
 
 //Gives grey left border to stocks that didn't change
 noChangeStock.forEach(function(x) {
-    x.style.borderLeftWidth = "4px";
-    x.style.borderLeftColor = "grey";
+    x.style.backgroundColor = "grey";
 });
 
 //Gives red left border to stocks that are down 
 minusStock.forEach(function(x) {
-    x.style.borderLeftWidth = "4px";
-    x.style.borderLeftColor = "red";
+    x.style.backgroundColor = "#c73e43";
 });
 
 //Goes back to the home page when back button is clicked

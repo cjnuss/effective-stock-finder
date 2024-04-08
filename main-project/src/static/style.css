@@ -4,6 +4,8 @@ body{
     height: 100vh;
     margin: 0;
     padding: 0;
+    font-family:Arial, Helvetica, sans-serif !important;
+    color: #dee8de !important;
 }
 
 /* Sets styling for stuff inside content div */
@@ -28,6 +30,20 @@ body{
     justify-content: center;
 }
 
+.stock-short-name {
+    margin-left: 8px;
+    margin-top: 0px;
+}
+
+.stock-price {
+    margin-top:-8px;
+    margin-left: 8px;
+    font-size: 35px;
+    color: rgb(240, 240, 240) !important;
+    text-shadow: 1.5px 1.5px #393636;
+    font-weight: 500 !important;
+}
+
 /* Sets styling for stuff inside indexes div */
 .indexes {
     display: flex;
@@ -39,19 +55,34 @@ body{
 /* Sets styling for each individual stock */
 .stock {
     margin: 5px;
-    width: 300px;
-    text-align: center;
+    width: 205px;
     align-items: center;
-    border: 0.01px solid rgb(184, 184, 184);
-    border-radius: 5px;
+    border: 0.01px solid rgb(134, 134, 134);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
 }
+
+.stock-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stock-row div {
+    margin-left: 8px;
+    margin-bottom: 0px;
+    margin-top: -5px;
+}
+
+.stock-row-percent-change {
+    margin-right: 5px;
+}
+
 
 /* Sets styling for each individual index */
 .index {
     margin: 5px;
     margin-bottom: 20px;
-    width: 300px;
+    width: 235px;
     text-align: center;
     align-items: center;
     border: 0.01px solid rgb(184, 184, 184);

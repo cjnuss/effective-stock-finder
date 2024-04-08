@@ -62,23 +62,40 @@
             {% else %}
                 <div class="stock" id="no-change-stock">
             {% endif %}
-                    <div><b>{{ variable.name }}</b></div>
-                    <div>{{ variable.short_name }}</div>
-                    <div>${{ variable.price }}</div>
-            {% if variable.percentage_change|float > 0 %}
-                    <div>⬆
-            {% elif variable.percentage_change|float < 0 %}
-                    <div>⬇️ 
-            {% else %}
-                    <div>⏹
-            {% endif %}
-                    {{ variable.percentage_change }}% | ${{ variable.price_change }}</div>
+                    <div class="stock-short-name"><b>{{ variable.short_name }}</b></div>
+                    <div class="stock-price">{{ variable.price }}</div>
+            
+                    <div class="stock-row">
+                        <div>🇭 150</div>
+                            {% if variable.percentage_change|float > 0 %}
+                            <div class="stock-row-percent-change">
+                                {{ variable.percentage_change }}% ⬆
+                            {% elif variable.percentage_change|float < 0 %}
+                            <div class="stock-row-percent-change">
+                                {{ variable.percentage_change }}% ⬇
+                            {% else %}
+                            <div class="stock-row-percent-change">
+                                {{ variable.percentage_change }}% ⏹
+                            {% endif %}
+                            </div>
+                        </div>
+                    <div class="stock-row">
+                        <div>🇱 110</div>
+                        {% if variable.percentage_change|float > 0 %}
+                        <div class="stock-row-percent-change">
+                            ${{ variable.price_change }} ⬆
+                        {% elif variable.percentage_change|float < 0 %}
+                        <div class="stock-row-percent-change">
+                            ${{ variable.price_change }} ⬇
+                        {% else %}
+                        <div class="stock-row-percent-change">
+                            ${{ variable.price_change }} ⏹
+                        {% endif %}
+                        </div>
+                    </div>
                 </div>
         {% endfor %}
     </div>
-    <!-- Bottom navbar --> 
-    <nav class="bottom-navbar">
-        <h2 class="navbar-title-2">Blame Chris for any financial losses!</h2>
-    </nav>
+
 </body>
 </html>
