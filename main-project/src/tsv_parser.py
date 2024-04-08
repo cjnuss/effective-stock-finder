@@ -69,7 +69,7 @@ def process_row(row, headers):
                     #Append the stock price to the list
                     #This will get us the <value> tag we want
                     valueFind = response.find("<transactionPricePerShare>")
-                    price = ""
+                    price = "0"
 
                     while valueFind != -1:
                         end_pos = response.find("</transactionPricePerShare>", valueFind)
