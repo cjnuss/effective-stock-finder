@@ -82,11 +82,9 @@ body{
 .index {
     margin: 5px;
     margin-bottom: 20px;
-    width: 235px;
-    text-align: center;
+    width: 205px;
     align-items: center;
     border: 0.01px solid rgb(184, 184, 184);
-    border-radius: 5px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 

@@ -37,17 +37,36 @@
             {% else %}
                 <div class="index" id="no-change-index">
             {% endif %}
-                    <div><b>{{ index.name }}</b></div>
-                    <div>{{ index.short_name }}</div>
-                    <div>${{ index.price }}</div>
-            {% if index.percentage_change|float > 0 %}
-                    <div>⬆
-            {% elif index.percentage_change|float < 0 %}
-                    <div>⬇️ 
-            {% else %}
-                    <div>⏹
-            {% endif %}
-                    {{ index.percentage_change }}% | ${{ index.price_change }}</div>
+                <div class="stock-short-name"><b>{{ index.short_name }}</b></div>
+                <div class="stock-price">{{ index.price }}</div>
+                <div class="stock-row">
+                    <div>🇭 150</div> <!-- Today's highest price   -->
+                        {% if index.percentage_change|float > 0 %}
+                        <div class="stock-row-percent-change">
+                            {{ index.percentage_change }}% ⬆
+                        {% elif index.percentage_change|float < 0 %}
+                        <div class="stock-row-percent-change">
+                            {{ index.percentage_change }}% ⬇
+                        {% else %}
+                        <div class="stock-row-percent-change">
+                            {{ index.percentage_change }}% ⏹
+                        {% endif %}
+                        </div>
+                    </div>
+                <div class="stock-row">
+                    <div>🇱 110</div> <!-- Todays' lowest price   -->
+                    {% if index.percentage_change|float > 0 %}
+                    <div class="stock-row-percent-change">
+                        ${{ index.price_change }} ⬆
+                    {% elif index.percentage_change|float < 0 %}
+                    <div class="stock-row-percent-change">
+                        ${{ index.price_change }} ⬇
+                    {% else %}
+                    <div class="stock-row-percent-change">
+                        ${{ index.price_change }} ⏹
+                    {% endif %}
+                    </div>
+                </div>
                 </div>
         {% endfor %}
     </div>
@@ -66,7 +85,7 @@
                     <div class="stock-price">{{ variable.price }}</div>
             
                     <div class="stock-row">
-                        <div>🇭 150</div>
+                        <div>🇭 150</div> <!-- Today's highest price   -->
                             {% if variable.percentage_change|float > 0 %}
                             <div class="stock-row-percent-change">
                                 {{ variable.percentage_change }}% ⬆
@@ -80,7 +99,7 @@
                             </div>
                         </div>
                     <div class="stock-row">
-                        <div>🇱 110</div>
+                        <div>🇱 110 </div> <!-- Today's lowest price   -->
                         {% if variable.percentage_change|float > 0 %}
                         <div class="stock-row-percent-change">
                             ${{ variable.price_change }} ⬆
