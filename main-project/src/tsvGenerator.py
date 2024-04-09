@@ -15,8 +15,6 @@ if __name__ == '__main__':
         os.remove('main-project/src/newfiles/2024-QTR2.tsv')
     if os.path.exists('main-project/src/newfiles/latest.tsv'):
         os.remove('main-project/src/newfiles/latest.tsv')
-    if os.path.exists('main-project/src/newfiles/2024-QTR1.tsv'):
-        os.remove('main-project/src/newfiles/2024-QTR1.tsv')
 
     print("Generating TSV file...")
     #Creates the tsv file
@@ -71,5 +69,7 @@ if __name__ == '__main__':
         os.remove('main-project/src/newfiles/2024-QTR2_old.tsv')
     if os.path.exists('main-project/src/newfiles/2024-QTR2.tsv'):
         os.rename('main-project/src/newfiles/2024-QTR2.tsv', 'main-project/src/newfiles/2024-QTR2_old.tsv')
+    if os.path.exists('main-project/src/newfiles/2024-QTR1.tsv'):
+        os.remove('main-project/src/newfiles/2024-QTR1.tsv')
 
     update_database()
