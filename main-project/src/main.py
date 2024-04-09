@@ -117,6 +117,8 @@ class Stock:
         prices = [] 
         percentage = [] 
         change = []
+        high = []
+        low = []
 
         #Get last trading day
         last_day = datetime.today().date()
@@ -139,6 +141,10 @@ class Stock:
                 data = response.history(start=last_day, end=last_day+timedelta(days=1))
                 open = data["Open"].iloc[0]
                 close = data["Close"].iloc[0]
+                latest_high = data["High"].iloc[0]
+                latest_low = data["Low"].iloc[0]
+                high.append(latest_high)
+                low.append(latest_low)
 
                 #Gets the price change from last trading day
                 price_change = custom_round(close-open)
@@ -154,18 +160,20 @@ class Stock:
                 prices.append("")
                 percentage.append("")
                 change.append("")
+                high.append("")
+                low.append("")
 
         #Creates the stock objects for the best stocks
-        stock1 = Stock(company_names[0], tickers[0], prices[0], percentage[0], change[0], descriptions[0])
-        stock2 = Stock(company_names[1], tickers[1], prices[1], percentage[1], change[1], descriptions[1])
-        stock3 = Stock(company_names[2], tickers[2], prices[2], percentage[2], change[2], descriptions[2])
-        stock4 = Stock(company_names[3], tickers[3], prices[3], percentage[3], change[3], descriptions[3])
-        stock5 = Stock(company_names[4], tickers[4], prices[4], percentage[4], change[4], descriptions[4])
-        stock6 = Stock(company_names[5], tickers[5], prices[5], percentage[5], change[5], descriptions[5])
-        stock7 = Stock(company_names[6], tickers[6], prices[6], percentage[6], change[6], descriptions[6])
-        stock8 = Stock(company_names[7], tickers[7], prices[7], percentage[7], change[7], descriptions[7])
-        stock9 = Stock(company_names[8], tickers[8], prices[8], percentage[8], change[8], descriptions[8])
-        stock10 = Stock(company_names[9], tickers[9], prices[9], percentage[9], change[9], descriptions[9])
+        stock1 = Stock(company_names[0], tickers[0], prices[0], percentage[0], change[0], descriptions[0], high[0], low[0])
+        stock2 = Stock(company_names[1], tickers[1], prices[1], percentage[1], change[1], descriptions[1], high[1], low[1])
+        stock3 = Stock(company_names[2], tickers[2], prices[2], percentage[2], change[2], descriptions[2], high[2], low[2])
+        stock4 = Stock(company_names[3], tickers[3], prices[3], percentage[3], change[3], descriptions[3], high[3], low[3])
+        stock5 = Stock(company_names[4], tickers[4], prices[4], percentage[4], change[4], descriptions[4], high[4], low[4])
+        stock6 = Stock(company_names[5], tickers[5], prices[5], percentage[5], change[5], descriptions[5], high[5], low[5])
+        stock7 = Stock(company_names[6], tickers[6], prices[6], percentage[6], change[6], descriptions[6], high[6], low[6])
+        stock8 = Stock(company_names[7], tickers[7], prices[7], percentage[7], change[7], descriptions[7], high[7], low[7])
+        stock9 = Stock(company_names[8], tickers[8], prices[8], percentage[8], change[8], descriptions[8], high[8], low[8])
+        stock10 = Stock(company_names[9], tickers[9], prices[9], percentage[9], change[9], descriptions[9], high[9], low[9])
         #Picks the best stock 
         if case == 1:
             return [stock1]
