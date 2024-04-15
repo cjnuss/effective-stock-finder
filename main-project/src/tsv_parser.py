@@ -22,6 +22,9 @@ def get_response(url, headers):
 #Returns the list containing information from a single row
 def process_row(row, headers):
     data = []
+    transaction_code = ""
+    counter = 0
+
     #Get everything from the row of the TSV into a list
     elements = row.split('|')
     #Filter forms by type and date (if needed)
@@ -30,80 +33,96 @@ def process_row(row, headers):
         #Get txt file
         response = get_response(url, headers)
         if response != "":
-            #Get the transaction code 
+            check = False
             start_pos = response.find("<transactionCode>")
-            end_pos = response.find("</transactionCode>")
-            if start_pos != -1 and end_pos != -1:
+
+            #Check if any of the codes are S or P instead of just the first code
+            while start_pos != -1:
+                end_pos = response.find("</transactionCode>", start_pos)
                 result_text = response[start_pos + len("<transactionCode>"):end_pos].strip()
-                #Filter transaction code A
+                #Filter transaction code S and P
                 if result_text == "S" or result_text == "P":
+                    check = True
+                    #Store the transaction code
+                    transaction_code = result_text
+                start_pos = response.find("<transactionCode>", end_pos)
+
+            if check:
+                data.append(transaction_code)
+
+                #Get the footnotes 
+                start_pos = response.find("<footnotes>")
+                end_pos = response.find("</footnotes>")
+                if start_pos != -1 and end_pos != -1:
+                    result_text = response[start_pos + len("<footnotes>"):end_pos].strip()
                     data.append(result_text)
+                else:
+                    data.append("")
+
+                #Get the issuer name 
+                start_pos = response.find("<issuerName>")
+                end_pos = response.find("</issuerName>")
+                if start_pos != -1 and end_pos != -1:
+                    result_text = response[start_pos + len("<issuerName>"):end_pos].strip()
+                    data.append(result_text)
+                else:
+                    data.append("")
+
+                #Get the issuer trading symbol 
+                start_pos = response.find("<issuerTradingSymbol>")
+                end_pos = response.find("</issuerTradingSymbol>")
+                if start_pos != -1 and end_pos != -1:
+                    result_text = response[start_pos + len("<issuerTradingSymbol>"):end_pos].strip()
+                    data.append(result_text)
+                else:
+                    data.append("")
                     
-                    #Get the footnotes 
-                    start_pos = response.find("<footnotes>")
-                    end_pos = response.find("</footnotes>")
-                    if start_pos != -1 and end_pos != -1:
-                        result_text = response[start_pos + len("<footnotes>"):end_pos].strip()
-                        data.append(result_text)
-                    else:
-                        data.append("")
+                #Get transaction share price 
+                valueFind = response.find("<transactionPricePerShare>")
+                price = "0"
 
-                    #Get the issuer name 
-                    start_pos = response.find("<issuerName>")
-                    end_pos = response.find("</issuerName>")
-                    if start_pos != -1 and end_pos != -1:
-                        result_text = response[start_pos + len("<issuerName>"):end_pos].strip()
-                        data.append(result_text)
-                    else:
-                        data.append("")
+                #Loop until a value is found or no more transactionPricePerShare tags are left
+                while valueFind != -1:
+                    end_pos = response.find("</transactionPricePerShare>", valueFind)
+                    if end_pos != -1:
+                        value_start_pos = response.find("<value>", valueFind, end_pos)
+                        value_end_pos = response.find("</value>", valueFind, end_pos)
+                        if value_start_pos != -1 and value_end_pos != -1:
+                            result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
+                            if result_text.replace('.', '', 1).isdigit():
+                                price = result_text
+                                break
 
-                    #Get the issuer trading symbol 
-                    start_pos = response.find("<issuerTradingSymbol>")
-                    end_pos = response.find("</issuerTradingSymbol>")
-                    if start_pos != -1 and end_pos != -1:
-                        result_text = response[start_pos + len("<issuerTradingSymbol>"):end_pos].strip()
-                        data.append(result_text)
-                    else:
-                        data.append("")
+                    valueFind = response.find("<transactionPricePerShare>", end_pos)
                     
-                    #Append the stock price to the list
-                    #This will get us the <value> tag we want
-                    valueFind = response.find("<transactionPricePerShare>")
-                    price = "0"
+                data.append(price)
 
-                    while valueFind != -1:
-                        end_pos = response.find("</transactionPricePerShare>", valueFind)
-                        if end_pos != -1:
-                            value_start_pos = response.find("<value>", valueFind, end_pos)
-                            value_end_pos = response.find("</value>", valueFind, end_pos)
+                #Divide file into multiple smaller files for each transaction code in the larger file
+                transactions = response.split("<transactionCode>")
+                volume = 0
+
+                #Loop through all the smaller files to find volume and sum them up 
+                for transaction in transactions[1:]:
+                    code = transaction.split("</transactionCode>")[0]
+                    valueFind = transaction.find("<transactionShares>")
+                    end_pos = transaction.find("</transactionShares>", valueFind)
+                    if code.strip() == transaction_code:
+                        counter += 1
+                        if valueFind and end_pos != -1:
+                            value_start_pos = transaction.find("<value>", valueFind, end_pos)
+                            value_end_pos = transaction.find("</value>", value_start_pos, end_pos)
                             if value_start_pos != -1 and value_end_pos != -1:
-                                result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
-                                if result_text.replace('.', '', 1).isdigit():
-                                    price = result_text
-                                    break
-
-                        valueFind = response.find("<transactionPricePerShare>", end_pos)
+                                result_text = transaction[value_start_pos + len("<value>"):value_end_pos].strip()
+                                volume += float(result_text)
                     
-                    data.append(price)
+                data.append(str(volume))
 
-                    valueFind = response.find("<transactionShares>")
-                    volume = 0
+                #Append date
+                data.append(elements[3])
 
-                    while valueFind != -1:
-                        end_pos = response.find("</transactionShares>", valueFind)
-                        if end_pos != -1:
-                            value_start_pos = response.find("<value>", valueFind, end_pos)
-                            value_end_pos = response.find("</value>", valueFind, end_pos)
-                            if value_start_pos != -1 and value_end_pos != -1:
-                                result_text = response[value_start_pos + len("<value>"):value_end_pos].strip()
-                                if result_text.replace('.', '', 1).isdigit():
-                                    volume += float(result_text)
+                #Append the number of P/S
+                data.append(counter)
 
-                        valueFind = response.find("<transactionShares>", end_pos)
-                    
-                    data.append(str(volume))
-
-                    data.append(elements[3])
     return data
 
 def tsv_to_data():
@@ -132,7 +151,7 @@ def tsv_to_data():
                 ticker = result[3]
                 footnotes = result[1]
                 if ticker != "NONE" and not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
-                    print(result)
+                    #print(result)
                     everything.append(result)
                     
     return everything
