@@ -183,9 +183,9 @@ def make_bstrings_ws(es):
         doc["symbol"] = key
         doc["str"] = value
         if key in symbolsP and key in symbolsS:
-            doc["PtoS_ratio"] = (symbolsP[key]*symbolsCP[key])/(symbolsS[key]*symbolsCS[key])
+            doc["PtoS_ratio"] = (symbolsP[key]*symbolsCP[key])/((symbolsS[key]*symbolsCS[key])+(symbolsP[key]*symbolsCP[key]))
         elif key in symbolsP:
-            doc["PtoS_ratio"] = 1000000
+            doc["PtoS_ratio"] = 1
         elif key in symbolsS:
             doc["PtoS_ratio"] = -1
         
