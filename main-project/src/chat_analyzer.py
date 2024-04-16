@@ -17,7 +17,7 @@ def process_input(prompt, user_input):
         prompt += f"Can you summarize the following document descriptions: {user_input}\n"
         #Gets and returns the response from Open AI
         gpt_response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo-0125",
             messages=[{"role": "system", "content": prompt}]
         )
         content = gpt_response.choices[0].message.content
