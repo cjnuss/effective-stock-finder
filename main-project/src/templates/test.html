@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price</title>
+    <style>
+        .stock-price {
+            display: inline-block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        .up-arrow {
+            color: green;
+        }
+        .down-arrow {
+            color: red;
+        }
+        .no-movement-symbol {
+            color: gray;
+            font-size: larger; /* Increase font size */
+            font-weight: bold; /* Make it bold */
+        }
+    </style>
+</head>
+<body>
+    <div class="stock-price">
+        <span>$100</span>
+        <span class="up-arrow">&#9650;</span>
+        <span class="no-movement-symbol">-</span>
+        <span class="high-symbol">H</span>
+    </div>
+    <div class="stock-price">
+        <span>$100</span>
+        <span class="down-arrow">&#9660;</span>
+        <span class="no-movement-symbol">-</span>
+        <span class="low-symbol">L</span>
+    </div>
+    <div class="stock-price">
+        <span>$100</span>
+        <span class="no-movement-symbol">-</span>
+        <span class="no-movement-symbol">-</span>
+        <span class="no-movement-symbol">-</span>
+    </div>
+</body>
+</html>

@@ -166,15 +166,19 @@ class Stock:
         stock8 = Stock(company_names[7], tickers[7], prices[7], percentage[7], change[7], descriptions[7])
         stock9 = Stock(company_names[8], tickers[8], prices[8], percentage[8], change[8], descriptions[8])
         stock10 = Stock(company_names[9], tickers[9], prices[9], percentage[9], change[9], descriptions[9])
+
+
+        
         #Picks the best stock 
         if case == 1:
             return [stock1]
 
         stock_names = [stock1, stock2, stock3, stock4, stock5, stock6, stock7, stock8, stock9, stock10]
-
+       
         return stock_names
 
 app = Flask(__name__)
+
 
 #Renders home page
 @app.route('/')

@@ -4,6 +4,8 @@ body{
     height: 100vh;
     margin: 0;
     padding: 0;
+    font-family:Arial, Helvetica, sans-serif !important;
+    color: #dee8de !important;
 }
 
 /* Sets styling for stuff inside content div */
@@ -28,6 +30,23 @@ body{
     justify-content: center;
 }
 
+.stock-short-name {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    margin-left: 8px;
+    margin-top: 0px;
+}
+
+.stock-price {
+    margin-top:-8px;
+    margin-left: 8px;
+    font-size: 35px;
+    color: rgb(240, 240, 240) !important;
+    text-shadow: 1.5px 1.5px #393636;
+    font-weight: 500 !important;
+}
+
 /* Sets styling for stuff inside indexes div */
 .indexes {
     display: flex;
@@ -39,23 +58,36 @@ body{
 /* Sets styling for each individual stock */
 .stock {
     margin: 5px;
-    width: 300px;
-    text-align: center;
+    width: 205px;
     align-items: center;
-    border: 0.01px solid rgb(184, 184, 184);
-    border-radius: 5px;
+    border: 0.01px solid rgb(134, 134, 134);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
 }
+
+.stock-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stock-row div {
+    margin-left: 8px;
+    margin-bottom: 0px;
+    margin-top: -5px;
+}
+
+.stock-row-percent-change {
+    margin-right: 5px;
+}
+
 
 /* Sets styling for each individual index */
 .index {
     margin: 5px;
     margin-bottom: 20px;
-    width: 300px;
-    text-align: center;
+    width: 205px;
     align-items: center;
     border: 0.01px solid rgb(184, 184, 184);
-    border-radius: 5px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -68,12 +100,12 @@ body{
 
 /* Sets styling for the top navbar */
 .navbar {
-    display: flex; 
-    justify-content: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: 	#1e2124;
     color: white;
-    padding: 20px, 10%; 
-    background-color: #24252A; 
-    height: 80px;
+    padding: 10px 20px;
 }
 
 /* Sets styling for the back button */
@@ -90,7 +122,7 @@ body{
 
 /* Sets styling for the button to switch between light and dark modes */
 #dark-mode-button {
-    background-color: rgba(0, 136, 169, 1);
+    background-color: #7289da;
     color: white;
     padding: 8px 16px; 
     border: none; 
@@ -108,14 +140,22 @@ body{
 
 /* Sets styling for the entire page if user switches to dark mode */
 body.dark-mode {
-    background-color: black; 
+    background-color: 	#1e2124; 
     color: #ffffff; 
 }
 
 /* Sets styling for the text in navbar */
 .navbar-title {
-    margin-left: 20px; 
+    font-family: 'Quicksand', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 0; /* Remove default margin */
+    flex-grow: 1; /* Allow the title to grow and take up available space */
+    text-align: center; /* Center the title text horizontally */
 }
+
+
 
 /* Sets styling for the buttons in navbar */
 .navbar-buttons {
@@ -150,4 +190,14 @@ body.dark-mode {
     align-items: center;
     justify-content: space-around;
 }
-
+.up-arrow {
+    color: green;
+}
+.down-arrow {
+    color: red;
+}
+.no-movement-symbol {
+    color: gray;
+    font-size: larger; /* Increase font size */
+    font-weight: bold; /* Make it bold */
+}
