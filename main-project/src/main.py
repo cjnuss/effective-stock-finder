@@ -43,13 +43,15 @@ def custom_round(number):
 
 class Stock:
     #Initializes stock object
-    def __init__(self,name,short_name,price,percentage_change,price_change,reason):
+    def __init__(self,name,short_name,price,percentage_change,price_change,reason, high, low):
         self.name = name
         self.short_name = short_name
         self.price = price
         self.percentage_change = percentage_change
         self.price_change = price_change
         self.reason = reason
+        self.high = high
+        self.low = low
 
     def indexes():
 
@@ -57,6 +59,8 @@ class Stock:
         prices = [] 
         percentage = [] 
         change = []
+        high = []
+        low = []
 
         #Lists containing index tickers and index names
         indexes = ["^GSPC", "^DJI", "^IXIC", "^RUT", "^NDX"]
@@ -83,6 +87,10 @@ class Stock:
                 data = response.history(start=last_day, end=last_day+timedelta(days=1))
                 open = data["Open"].iloc[0]
                 close = data["Close"].iloc[0]
+                latest_high = data["High"].iloc[0]
+                latest_low = data["Low"].iloc[0]
+                high.append(latest_high)
+                low.append(latest_low)
 
                 #Gets the price change from last trading day
                 price_change = custom_round(close-open)
@@ -100,11 +108,11 @@ class Stock:
                 change.append("")
 
         #Creates the stock objects for the indexes 
-        index1 = Stock(names[0], indexes[0], prices[0], percentage[0], change[0], descriptions[0])
-        index2 = Stock(names[1], indexes[1], prices[1], percentage[1], change[1], descriptions[1])
-        index3 = Stock(names[2], indexes[2], prices[2], percentage[2], change[2], descriptions[2])
-        index4 = Stock(names[3], indexes[3], prices[3], percentage[3], change[3], descriptions[3])
-        index5 = Stock(names[4], indexes[4], prices[4], percentage[4], change[4], descriptions[4])
+        index1 = Stock(names[0], indexes[0], prices[0], percentage[0], change[0], descriptions[0], high[0], low[0])
+        index2 = Stock(names[1], indexes[1], prices[1], percentage[1], change[1], descriptions[1], high[1], low[1])
+        index3 = Stock(names[2], indexes[2], prices[2], percentage[2], change[2], descriptions[2], high[2], low[2])
+        index4 = Stock(names[3], indexes[3], prices[3], percentage[3], change[3], descriptions[3], high[3], low[3])
+        index5 = Stock(names[4], indexes[4], prices[4], percentage[4], change[4], descriptions[4], high[4], low[4])
 
         stock_names = [index1, index2, index3, index4, index5]
 
