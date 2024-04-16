@@ -6,6 +6,9 @@ body{
     padding: 0;
     font-family:Arial, Helvetica, sans-serif !important;
     color: #dee8de !important;
+    background-image: url("board.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 /* Sets styling for stuff inside content div */
@@ -31,6 +34,9 @@ body{
 }
 
 .stock-short-name {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
+    font-style: normal;
     margin-left: 8px;
     margin-top: 0px;
 }
@@ -54,7 +60,7 @@ body{
 
 /* Sets styling for each individual stock */
 .stock {
-    margin: 5px;
+    margin: 1.5px;
     width: 205px;
     align-items: center;
     border: 0.01px solid rgb(134, 134, 134);
@@ -80,7 +86,7 @@ body{
 
 /* Sets styling for each individual index */
 .index {
-    margin: 5px;
+    margin: 1.5px;
     margin-bottom: 20px;
     width: 205px;
     align-items: center;
@@ -97,12 +103,13 @@ body{
 
 /* Sets styling for the top navbar */
 .navbar {
-    display: flex; 
-    justify-content: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #424549;
     color: white;
-    padding: 20px, 10%; 
-    background-color: #24252A; 
-    height: 80px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
 }
 
 /* Sets styling for the back button */
@@ -119,7 +126,7 @@ body{
 
 /* Sets styling for the button to switch between light and dark modes */
 #dark-mode-button {
-    background-color: rgba(0, 136, 169, 1);
+    background-color: #7289da;
     color: white;
     padding: 8px 16px; 
     border: none; 
@@ -137,14 +144,23 @@ body{
 
 /* Sets styling for the entire page if user switches to dark mode */
 body.dark-mode {
-    background-color: black; 
+    background-color: 	#36393e; 
     color: #ffffff; 
+    
 }
 
 /* Sets styling for the text in navbar */
 .navbar-title {
-    margin-left: 20px; 
+    
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 0; /* Remove default margin */
+    flex-grow: 1; /* Allow the title to grow and take up available space */
+    text-align: center; /* Center the title text horizontally */
 }
+
+
 
 /* Sets styling for the buttons in navbar */
 .navbar-buttons {
@@ -179,4 +195,19 @@ body.dark-mode {
     align-items: center;
     justify-content: space-around;
 }
+.up-arrow {
+    color: green;
+}
+.down-arrow {
+    color: red;
+}
+.no-movement-symbol {
+    color: gray;
+    font-size: larger; /* Increase font size */
+    font-weight: bold; /* Make it bold */
+}
 
+#rec-button {
+    background-color: #7289da !important;
+    font-family: 'Quicksand', sans-serif !important;
+}
