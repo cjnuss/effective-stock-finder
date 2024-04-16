@@ -96,6 +96,7 @@ def make_docs(l, indexname):
         price = thing[4]
         volume = thing[5]
         date = thing[6]
+        count = thing[7]
         #add more here and below
         
         doc = dict() 
@@ -108,6 +109,7 @@ def make_docs(l, indexname):
         doc["price"] = price
         doc["volume"] = volume
         doc["date"] = date
+        doc["count"] = count
         
         #if doc not in docs:
         docs.append(doc)
@@ -144,6 +146,7 @@ def make_bstrings_ws(es):
         price = doc['_source']['price']
         volume = doc['_source']['volume']
         date = doc['_source']['date']
+        count = doc['_source']['count']
         #add more here and below
         
         #building str
@@ -152,7 +155,7 @@ def make_bstrings_ws(es):
         else:
             symbols[issuer_trading_symbol] += " " + transaction_code
         
-        product = float(price)*float(volume)    
+        product = float(price)*float(volume) * float(count) 
         #building P  
         if transaction_code == 'P':
             if issuer_trading_symbol not in symbolsP:
