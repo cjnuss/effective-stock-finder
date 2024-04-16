@@ -137,6 +137,8 @@ def make_bstrings_ws(es):
     #used for price and stuff
     symbolsP = {}
     symbolsS = {}
+    symbolsCP = {}
+    symbolsCS = {}
 
     for doc in res["hits"]["hits"]:
         transaction_code = doc['_source']['transaction code']
@@ -160,14 +162,18 @@ def make_bstrings_ws(es):
         if transaction_code == 'P':
             if issuer_trading_symbol not in symbolsP:
                 symbolsP[issuer_trading_symbol] = product
+                symbolsCP[issuer_trading_symbol] = float(count)
             else:
                 symbolsP[issuer_trading_symbol] += product
+                symbolsCP[issuer_trading_symbol] += float(count)
         #building S
         if transaction_code == 'S':
             if issuer_trading_symbol not in symbolsS:
                 symbolsS[issuer_trading_symbol] = product
+                symbolsCS[issuer_trading_symbol] = float(count)
             else:
                 symbolsS[issuer_trading_symbol] += product
+                symbolsCS[issuer_trading_symbol] += float(count)
         
     
     for key, value in symbols.items():
@@ -177,7 +183,7 @@ def make_bstrings_ws(es):
         doc["symbol"] = key
         doc["str"] = value
         if key in symbolsP and key in symbolsS:
-            doc["PtoS_ratio"] = symbolsP[key]/symbolsS[key]
+            doc["PtoS_ratio"] = (symbolsP[key]*symbolsCP[key])/(symbolsS[key]*symbolsCS[key])
         elif key in symbolsP:
             doc["PtoS_ratio"] = 1000000
         elif key in symbolsS:
