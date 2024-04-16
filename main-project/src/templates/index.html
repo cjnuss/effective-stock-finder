@@ -17,16 +17,11 @@
         <h2 class="navbar-title">Effective Stock Finder</h2>
         <div class="navbar-buttons">
             <!-- Button to toggle between light and dark modes --> 
-            <button onclick="toggleMode()" id="dark-mode-button">Dark Mode</button>
+
         </div>
     </nav>
-    <div class="content">
-        <!-- Button that sends you to a new page that displays current best stock to buy --> 
-        <form id="stock_rec" action="/best_stock" method="get">
-            <button type="submit" id="rec-button" class="btn btn-primary">Get Current Best Stock to Buy</button>
-        </form>            
-    </div>
 
+    <h3 class="navbar-title">Market Averages:</h3>
     <div class="indexes" id="indexes">
         <!-- Displays indexes and changes colors and symbols based on the position of the index in last 3 days--> 
         {% for index in indexes %}
@@ -40,30 +35,30 @@
                 <div class="stock-short-name"><b>{{ index.short_name }}</b></div>
                 <div class="stock-price">{{ index.price }}</div>
                 <div class="stock-row">
-                    <div>🇭 150</div> <!-- Today's highest price   -->
+                    <div>🇭 {{ index.high }}</div> <!-- Today's highest price   -->
                         {% if index.percentage_change|float > 0 %}
                         <div class="stock-row-percent-change">
-                            {{ index.percentage_change }}% ⬆
+                            {{ index.percentage_change }}% <span class="up-arrow">&#9650;</span>
                         {% elif index.percentage_change|float < 0 %}
                         <div class="stock-row-percent-change">
-                            {{ index.percentage_change }}% ⬇
+                            {{ index.percentage_change }}% <span class="down-arrow">&#9660;</span>
                         {% else %}
                         <div class="stock-row-percent-change">
-                            {{ index.percentage_change }}% ⏹
+                            {{ index.percentage_change }}% <span class="no-movement-symbol">-</span>
                         {% endif %}
                         </div>
                     </div>
                 <div class="stock-row">
-                    <div>🇱 110</div> <!-- Todays' lowest price   -->
+                    <div>🇱 {{ index.low }}</div> <!-- Todays' lowest price   -->
                     {% if index.percentage_change|float > 0 %}
                     <div class="stock-row-percent-change">
-                        ${{ index.price_change }} ⬆
+                        ${{ index.price_change }} <span class="up-arrow">&#9650;</span>
                     {% elif index.percentage_change|float < 0 %}
                     <div class="stock-row-percent-change">
-                        ${{ index.price_change }} ⬇
+                        ${{ index.price_change }} <span class="down-arrow">&#9660;</span>
                     {% else %}
                     <div class="stock-row-percent-change">
-                        ${{ index.price_change }} ⏹
+                        ${{ index.price_change }} <span class="no-movement-symbol">-</span>
                     {% endif %}
                     </div>
                 </div>
@@ -71,6 +66,7 @@
         {% endfor %}
     </div>
 
+    <h3 class="navbar-title">Recommended Stocks:</h3>
     <div class="stocks" id="stocks">
         <!-- Displays stocks and changes colors and symbols based on the position of the stock in last 3 days--> 
         {% for variable in variables %}
@@ -85,35 +81,42 @@
                     <div class="stock-price">{{ variable.price }}</div>
             
                     <div class="stock-row">
-                        <div>🇭 150</div> <!-- Today's highest price   -->
+                        <div>🇭 {{ variable.high }}</div> <!-- Today's highest price   -->
                             {% if variable.percentage_change|float > 0 %}
                             <div class="stock-row-percent-change">
-                                {{ variable.percentage_change }}% ⬆
+                                {{ variable.percentage_change }}% <span class="up-arrow">&#9650;</span>
                             {% elif variable.percentage_change|float < 0 %}
                             <div class="stock-row-percent-change">
-                                {{ variable.percentage_change }}% ⬇
+                                {{ variable.percentage_change }}% <span class="down-arrow">&#9660;</span>
                             {% else %}
                             <div class="stock-row-percent-change">
-                                {{ variable.percentage_change }}% ⏹
+                                {{ variable.percentage_change }}%<span class="no-movement-symbol">-</span>
                             {% endif %}
                             </div>
                         </div>
                     <div class="stock-row">
-                        <div>🇱 110 </div> <!-- Today's lowest price   -->
+                        <div>🇱 {{ variable.low }} </div> <!-- Today's lowest price   -->
                         {% if variable.percentage_change|float > 0 %}
                         <div class="stock-row-percent-change">
-                            ${{ variable.price_change }} ⬆
+                            ${{ variable.price_change }} <span class="up-arrow">&#9650;</span>
                         {% elif variable.percentage_change|float < 0 %}
                         <div class="stock-row-percent-change">
-                            ${{ variable.price_change }} ⬇
+                            ${{ variable.price_change }} <span class="down-arrow">&#9660;</span>
                         {% else %}
                         <div class="stock-row-percent-change">
-                            ${{ variable.price_change }} ⏹
+                            ${{ variable.price_change }} <span class="no-movement-symbol">-</span>
                         {% endif %}
                         </div>
                     </div>
                 </div>
         {% endfor %}
+    </div>
+
+    <div class="content">
+        <!-- Button that sends you to a new page that displays current best stock to buy --> 
+        <form id="stock_rec" action="/best_stock" method="get">
+            <button type="submit" id="rec-button" class="btn btn-primary">Get Current Best Stock to Buy</button>
+        </form>            
     </div>
 
 </body>
