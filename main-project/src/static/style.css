@@ -8,7 +8,7 @@ body{
     color: #dee8de !important;
     background-image: url("board.jpeg");
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
 }
 
 /* Sets styling for stuff inside content div */
@@ -31,7 +31,16 @@ body{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+@media screen and (max-width: 1070px) {
+    .stocks {
+        width: auto;
+    }
+  }
 
 .stock-short-name {
     font-family: 'Quicksand', sans-serif;
@@ -66,6 +75,7 @@ body{
     border: 0.01px solid rgb(134, 134, 134);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     font-size: 15px;
+    box-sizing: border-box; 
 }
 
 .stock-row {
