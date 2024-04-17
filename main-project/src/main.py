@@ -89,8 +89,8 @@ class Stock:
                 close = data["Close"].iloc[0]
                 latest_high = data["High"].iloc[0]
                 latest_low = data["Low"].iloc[0]
-                high.append(latest_high)
-                low.append(latest_low)
+                high.append(custom_round(latest_high))
+                low.append(custom_round(latest_low))
 
                 #Gets the price change from last trading day
                 price_change = custom_round(close-open)
@@ -151,8 +151,8 @@ class Stock:
                 close = data["Close"].iloc[0]
                 latest_high = data["High"].iloc[0]
                 latest_low = data["Low"].iloc[0]
-                high.append(latest_high)
-                low.append(latest_low)
+                high.append(custom_round(latest_high))
+                low.append(custom_round(latest_low))
 
                 #Gets the price change from last trading day
                 price_change = custom_round(close-open)
