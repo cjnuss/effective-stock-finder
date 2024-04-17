@@ -205,11 +205,20 @@ def make_bstrings_ws(es):
 def get_top_ten(es):
     #this query will get the top 10 stocks based on boosting
     res = es.search (index="bstring_ws", body={"query": {
-        "query_string": {
-        "query": "(P)^3.5 (S)^4.5",
-        "default_field": "str"
+        "bool": {
+            "must": [
+                {
+                    "range": {
+                        "PtoS_ratio": {"gte": 0.8}
+                    }
+                }
+            ]
         }
-    }}, size=10)
+    },
+    "sort": [
+        {"Pamount": {"order": "desc"}}
+    ]
+    }, size=10)
 
 
     top_ten = []
