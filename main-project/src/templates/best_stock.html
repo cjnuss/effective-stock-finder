@@ -17,8 +17,6 @@
     <nav class="navbar">
         <h2 class="navbar-title">Effective Stock Finder</h2>
         <div class="navbar-buttons">
-            <!-- Button to toggle between light and dark modes --> 
-            <button onclick="toggleMode()" id="dark-mode-button">Dark Mode</button>
             <!-- Button to go back to the original page with 10 stocks --> 
             <button onclick="goBack()" id="back-button">Back</button>
         </div>
@@ -39,17 +37,37 @@
             {% else %}
                 <div class="stock" id="no-change-stock">
             {% endif %}
-                    <div><b>{{ variable.name }}</b></div>
-                    <div>{{ variable.short_name }}</div>
-                    <div>${{ variable.price }}</div>
-            {% if variable.percentage_change|int > 0 %}
-                    <div>⬆
-            {% elif variable.percentage_change|int < 0 %}
-                    <div>⬇️ 
-            {% else %}
-                    <div>⏹
-            {% endif %}
-                    {{ variable.percentage_change }}% | ${{ variable.price_change }}</div>
+            <div class="stock-short-name"><b>{{ variable.short_name }}</b></div>
+            <div class="stock-price">{{ variable.price }}</div>
+    
+            <div class="stock-row">
+                <div>🇭 {{ variable.high }}</div> <!-- Today's highest price   -->
+                    {% if variable.percentage_change|float > 0 %}
+                    <div class="stock-row-percent-change">
+                        {{ variable.percentage_change }}% <span class="up-arrow">&#9650;</span>
+                    {% elif variable.percentage_change|float < 0 %}
+                    <div class="stock-row-percent-change">
+                        {{ variable.percentage_change }}% <span class="down-arrow">&#9660;</span>
+                    {% else %}
+                    <div class="stock-row-percent-change">
+                        {{ variable.percentage_change }}%<span class="no-movement-symbol">-</span>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="stock-row">
+                    <div>🇱 {{ variable.low }} </div> <!-- Today's lowest price   -->
+                    {% if variable.percentage_change|float > 0 %}
+                    <div class="stock-row-percent-change">
+                        ${{ variable.price_change }} <span class="up-arrow">&#9650;</span>
+                    {% elif variable.percentage_change|float < 0 %}
+                    <div class="stock-row-percent-change">
+                        ${{ variable.price_change }} <span class="down-arrow">&#9660;</span>
+                    {% else %}
+                    <div class="stock-row-percent-change">
+                        ${{ variable.price_change }} <span class="no-movement-symbol">-</span>
+                    {% endif %}
+                    </div>
+                </div>
                 </div>
         {% endfor %}
     </div>
@@ -57,9 +75,5 @@
     <div class="plot-container">
         <div id="plot" data-plot="{{ plot_data }}" color="{{ color }}"></div>
     </div>
-    <!-- Bottom navbar --> 
-    <nav class="bottom-navbar">
-        <h2 class="navbar-title-2">Blame Chris for any financial losses!</h2>
-    </nav>
 </body>
 </html>
