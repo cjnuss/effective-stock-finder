@@ -30,9 +30,9 @@
     <!-- Displays the best and changes color and symbol based on the position of the stock in last 3 days--> 
     <div class="stocks" id="stocks">
         {% for variable in variables %}
-            {% if variable.percentage_change|int > 0 %}
+            {% if variable.percentage_change|float > 0 %}
                 <div class="stock" id="plus-stock">
-            {% elif variable.percentage_change|int < 0 %}
+            {% elif variable.percentage_change|float < 0 %}
                 <div class="stock" id="minus-stock">
             {% else %}
                 <div class="stock" id="no-change-stock">
