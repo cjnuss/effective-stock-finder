@@ -109,6 +109,8 @@ body{
     text-align: center;
     font-size: 20px;
     margin: 20px 0;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 /* Sets styling for the top navbar */
