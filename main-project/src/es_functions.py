@@ -273,14 +273,6 @@ def update_database():
     
     docs3 = make_bstrings_ws(es)
     dump_documents(es, docs3)
-    
-
-
-
-
-
-
-
 
 
 

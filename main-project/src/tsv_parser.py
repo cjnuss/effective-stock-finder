@@ -1,6 +1,8 @@
 import csv
 import requests
 import multiprocessing
+import yfinance as yf
+from datetime import datetime, timedelta
 
 #Gets the txt file content 
 def get_response(url, headers):
@@ -150,7 +152,26 @@ def tsv_to_data():
             if result and result != []:
                 ticker = result[3]
                 footnotes = result[1]
-                if ticker != "NONE" and not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
+
+                #Check if the stock is listed
+                try: 
+                    #Get last trading day
+                    last_day = datetime.today().date()
+
+                    #Set the last trading day to Friday if its Saturday or Sunday
+                    if last_day.weekday() == 5:  
+                        last_day = last_day - timedelta(days=1)
+                    elif last_day.weekday() == 6:  
+                        last_day = last_day - timedelta(days=2)
+
+                    #Get historical data
+                    response = yf.Ticker(ticker)
+                    price = response.history(period="1d")["Close"].iloc[-1]
+
+                except Exception as e:
+                    price = ""
+
+                if price != "" and ticker != "NONE" and not((footnotes.__contains__("purchasing") or footnotes.__contains__("Purchasing")) and footnotes.__contains__("plan")):
                     #print(result)
                     everything.append(result)
                     

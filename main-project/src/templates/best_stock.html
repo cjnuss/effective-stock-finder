@@ -24,7 +24,7 @@
     <!-- Displays the explanation for buying the stock --> 
     <div class="explanation">
             {% for variable in variables %}
-                <p>Buy {{ variable.short_name }}, becuase {{ variable.reason }}</p>
+                <p>{{ variable.reason }}</p>
             {% endfor %}
     </div>
     <!-- Displays the best and changes color and symbol based on the position of the stock in last 3 days--> 
