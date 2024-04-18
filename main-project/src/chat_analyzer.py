@@ -14,7 +14,7 @@ client = OpenAI(api_key=openai_api_key)
 def process_input(prompt, user_input):
     try:
         #Prompt, have to play with this to get optimal results, user_input are the footnotes
-        prompt += f"Based on the following insider purchasing documents, can you explain in a few words why insider trading can cause this stock to increase in price: {user_input}\n"
+        prompt += f"Based on the following insider purchasing documents, can you explain in 2 lines why insider trading can cause this particular stock to increase in price: {user_input}\n"
         #Gets and returns the response from Open AI
         gpt_response = client.chat.completions.create(
             model="gpt-3.5-turbo-0125",
