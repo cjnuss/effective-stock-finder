@@ -142,7 +142,7 @@ def tsv_to_data():
         reader = csv.reader(tsvfile, delimiter='\t')
         lines = list(reader)
 
-    #Creates a pool of processes which is equal to the number of CPU cores
+    #Creates a pool of processes which is equal to the number of CPU cores 
     with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
         #Iterate through every row in TSV
         for row in lines:

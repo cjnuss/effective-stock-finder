@@ -231,4 +231,4 @@ def stock_recommendations():
     return render_template('best_stock.html', variables=Stock.recommendations(1), plot_data=plot_data_json, color=color)
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0',debug=True)             
+  app.run(host='0.0.0.0',debug=True)
