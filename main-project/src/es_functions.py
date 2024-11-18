@@ -135,10 +135,10 @@ def make_bstrings_ws(es):
     docs = list()
     symbols = {}
     #used for price and stuff
-    symbolsP = {}
-    symbolsS = {}
-    symbolsCP = {}
-    symbolsCS = {}
+    symbolsPcount = {}
+    symbolsScount = {}
+    symbolsPvolume = {}
+    symbolsSvolume = {}
 
     for doc in res["hits"]["hits"]:
         transaction_code = doc['_source']['transaction code']
@@ -153,27 +153,27 @@ def make_bstrings_ws(es):
         
         #building str
         if issuer_trading_symbol not in symbols:
-            symbols[issuer_trading_symbol] = transaction_code
+            symbols[issuer_trading_symbol] = str(count)+transaction_code
         else:
-            symbols[issuer_trading_symbol] += " " + transaction_code
+            symbols[issuer_trading_symbol] += " " +str(count)+ transaction_code
         
-        product = float(price)*float(volume) * float(count) 
+        product = float(price)*float(volume)
         #building P  
         if transaction_code == 'P':
-            if issuer_trading_symbol not in symbolsP:
-                symbolsP[issuer_trading_symbol] = product
-                symbolsCP[issuer_trading_symbol] = float(count)
+            if issuer_trading_symbol not in symbolsPvolume:
+                symbolsPvolume[issuer_trading_symbol] = product
+                symbolsPcount[issuer_trading_symbol] = int(count)
             else:
-                symbolsP[issuer_trading_symbol] += product
-                symbolsCP[issuer_trading_symbol] += float(count)
+                symbolsPvolume[issuer_trading_symbol] += product
+                symbolsPcount[issuer_trading_symbol] += int(count)
         #building S
         if transaction_code == 'S':
-            if issuer_trading_symbol not in symbolsS:
-                symbolsS[issuer_trading_symbol] = product
-                symbolsCS[issuer_trading_symbol] = float(count)
+            if issuer_trading_symbol not in symbolsSvolume:
+                symbolsSvolume[issuer_trading_symbol] = product
+                symbolsScount[issuer_trading_symbol] = int(count)
             else:
-                symbolsS[issuer_trading_symbol] += product
-                symbolsCS[issuer_trading_symbol] += float(count)
+                symbolsSvolume[issuer_trading_symbol] += product
+                symbolsScount[issuer_trading_symbol] += int(count)
         
     
     for key, value in symbols.items():
@@ -182,17 +182,39 @@ def make_bstrings_ws(es):
         doc["_index"] = 'bstring_ws'
         doc["symbol"] = key
         doc["str"] = value
-        if key in symbolsP and key in symbolsS:
-            doc["PtoS_ratio"] = (symbolsP[key]*symbolsCP[key])/((symbolsS[key]*symbolsCS[key])+(symbolsP[key]*symbolsCP[key]))
-        elif key in symbolsP:
-            doc["PtoS_ratio"] = 1
-        elif key in symbolsS:
-            doc["PtoS_ratio"] = -1
+        #volume ratio
+        if key in symbolsPvolume and key in symbolsSvolume:
+            doc["PtoS_ratio_volume"] = float(symbolsPvolume[key])/(symbolsPvolume[key]+symbolsSvolume[key])
+        elif key in symbolsPvolume:
+            doc["PtoS_ratio_volume"] = 1
+        elif key in symbolsSvolume:
+            doc["PtoS_ratio_volume"] = 0
+        #count ratio
+        if key in symbolsPcount and key in symbolsScount:
+            doc["PtoS_ratio_count"] = float(symbolsPcount[key])/(symbolsPcount[key]+symbolsScount[key])
+        elif key in symbolsPcount:
+            doc["PtoS_ratio_count"] = 1
+        elif key in symbolsScount:
+            doc["PtoS_ratio_count"] = 0
+        #volumes
+        if key in symbolsPvolume and key in symbolsSvolume:
+            doc["Pvolume"] = symbolsPvolume[key]
+            doc["Svolume"] = symbolsSvolume[key]
+        elif key in symbolsPvolume:
+            doc["Pvolume"] = symbolsPvolume[key]
+        elif key in symbolsSvolume:
+            doc["Svolume"] = symbolsSvolume[key]
+        #counts
+        if key in symbolsPcount and key in symbolsScount:
+            doc["Pcount"] = symbolsPcount[key]
+            doc["Scount"] = symbolsScount[key]
+        elif key in symbolsPcount:
+            doc["Pcount"] = symbolsPcount[key]
+        elif key in symbolsScount:
+            doc["Scount"] = symbolsScount[key]
+
         
-        if key in symbolsP:
-            doc["Pamount"] = symbolsP[key]
-        else:
-            doc["Pamount"] = 0
+    
         
         docs.append(doc)
         
@@ -203,32 +225,31 @@ def make_bstrings_ws(es):
 
 
 def get_top_ten(es):
-    #this query will get the top 10 stocks based on boosting
-    res = es.search (index="bstring_ws", body={"query": {
-        "bool": {
-            "must": [
-                {
-                    "range": {
-                        "PtoS_ratio": {"gte": 0.8}
-                    }
-                }
-            ]
-        }
-    },
-    "sort": [
-        {"Pamount": {"order": "desc"}}
-    ]
-    }, size=10)
+    #get all the documents
+    res = es.search (index="bstring_ws", body={"query": {"match_all": {}}},size=10000)
 
+    scores = {}
 
-    top_ten = []
-    #prints the top 10 along with the scores
-    print(len(res["hits"]["hits"]))
     for doc in res["hits"]["hits"]:
-        print(doc["_score"],end="   ")
-        print(doc["_source"])
-        top_ten.append(doc['_source']['symbol'])
-    print()
+        symbol = doc['_source']['symbol']
+        string = doc['_source']['str']
+        volume_ratio = doc['_source']['PtoS_ratio_volume']
+        count_ratio = doc['_source']['PtoS_ratio_count']
+        Pvolume = doc['_source']['Pvolume']
+        Svolume = doc['_source']['Svolume']
+        Pcount = doc['_source']['Pcount']
+        Scount = doc['_source']['Scount']
+
+        if volume_ratio < 0.8:
+            scores[symbol] = 0
+        else:
+            scores[symbol] = Pvolume * count_ratio
+        
+        #print out the score of each stock
+        print(str(symbol) + "   volume: " + str(Pvolume) + "   ratio: " + str(count_ratio))
+
+    top_ten = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)[:10]
+    top_ten_symbols = [key for key, value in top_ten]
 
     #info is a list with 10 lists, each of them represents a stock
     #each of these stock lists will be a list of things "articles" idk what they're called
@@ -250,6 +271,59 @@ def get_top_ten(es):
         info.append(documents)
     
     return info
+
+
+
+
+
+
+def get_top_25_sell(es):
+    #get all the documents
+    res = es.search (index="bstring_ws", body={"query": {"match_all": {}}},size=10000)
+
+    scores = {}
+
+    for doc in res["hits"]["hits"]:
+        symbol = doc['_source']['symbol']
+        string = doc['_source']['str']
+        volume_ratio = doc['_source']['PtoS_ratio_volume']
+        count_ratio = doc['_source']['PtoS_ratio_count']
+        Pvolume = doc['_source']['Pvolume']
+        Svolume = doc['_source']['Svolume']
+        Pcount = doc['_source']['Pcount']
+        Scount = doc['_source']['Scount']
+
+
+        scores[symbol] = Svolume * (1.0-count_ratio)
+        
+        #print out the score of each stock
+        print(str(symbol) + "   " + str(scores[symbol]))
+
+    top_ten = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)[:25]
+    top_ten_symbols = [key for key, value in top_ten]
+
+    #info is a list with 10 lists, each of them represents a stock
+    #each of these stock lists will be a list of things "articles" idk what they're called
+    #each article will be a list of 4 things that you gave me 
+    info = []
+    for stock in top_ten:
+        res = es.search (index="stockinfo", body={"query": {"match": {"issuer trading symbol": stock}}})
+        documents = []
+        for doc in res["hits"]["hits"]:
+            li = []
+            li.append(doc['_source']['transaction code'])
+            li.append(doc['_source']['footnote'])
+            li.append(doc['_source']['issuer name'])
+            li.append(doc['_source']['issuer trading symbol'])
+            li.append(doc['_source']['date'])
+            #get rid of duplicates
+            if li not in documents:
+                documents.append(li)
+        info.append(documents)
+    
+    return info
+
+
 
 
 
