@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 #this will get you an istance of es (bonsai version)
 def get_es():
     #bonsai = os.environ['BONSAI_URL']
-    bonsai = "https://838alqklx3:odrdceak9j@stonks-up-search-7220409407.us-east-1.bonsaisearch.net:443"
+    bonsai = "https://c9uby3dcqt:9sqdgn79yh@ourstonkscluster-681104842.us-east-1.bonsaisearch.net:443"
     auth = re.search('https\:\/\/(.*)\@', bonsai).group(1).split(':')
     host = bonsai.replace('https://%s:%s@' % (auth[0], auth[1]), '')
 
