@@ -259,7 +259,7 @@ def get_top_ten(es):
     #each of these stock lists will be a list of things "articles" idk what they're called
     #each article will be a list of 4 things that you gave me 
     info = []
-    for stock in top_ten:
+    for stock in top_ten_symbols:
         res = es.search (index="stockinfo", body={"query": {"match": {"issuer trading symbol": stock}}})
         documents = []
         for doc in res["hits"]["hits"]:
