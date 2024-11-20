@@ -59,19 +59,19 @@ def clear_es_index(es, indexname):
     
     
 def clear_old_data(es):
-    three_days_ago = datetime.now() - timedelta(days=3)
-    three_days_ago_str = three_days_ago.strftime("%Y-%m-%d")
+    five_days_ago = datetime.now() - timedelta(days=5)
+    five_days_ago_str = five_days_ago.strftime("%Y-%m-%d")
     query = {
         "query": {
             "range": {
                 "date": {
-                    "lt": three_days_ago_str
+                    "lt": five_days_ago_str
                 }
             }
         }
     }
     res = es.delete_by_query(index='stockinfo', body=query)
-    print("cleared data from before: {}".format(three_days_ago_str))
+    print("cleared data from before: {}".format(five_days_ago_str))
     
     
     
@@ -202,16 +202,20 @@ def make_bstrings_ws(es):
             doc["Svolume"] = symbolsSvolume[key]
         elif key in symbolsPvolume:
             doc["Pvolume"] = symbolsPvolume[key]
+            doc["Svolume"] = 0
         elif key in symbolsSvolume:
             doc["Svolume"] = symbolsSvolume[key]
+            doc["Pvolume"] = 0
         #counts
         if key in symbolsPcount and key in symbolsScount:
             doc["Pcount"] = symbolsPcount[key]
             doc["Scount"] = symbolsScount[key]
         elif key in symbolsPcount:
             doc["Pcount"] = symbolsPcount[key]
+            doc["Scount"] = 0
         elif key in symbolsScount:
             doc["Scount"] = symbolsScount[key]
+            doc["Pcount"] = 0
 
         
     
