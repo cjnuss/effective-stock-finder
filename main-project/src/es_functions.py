@@ -87,6 +87,7 @@ def clear_old_data(es):
 #the returned thing named docs is a list of dictionaries
 def make_docs(l, indexname):
     docs = list()
+    all_links = []
 
     for thing in l:
         transaction_code = thing[0]
@@ -99,6 +100,9 @@ def make_docs(l, indexname):
         count = thing[7]
         link = thing[8]
         #add more here and below
+
+        #get the end part of the link
+        link_end = link.split('/')[-1]
         
         doc = dict() 
         doc["_op_type"] = 'index'
@@ -113,7 +117,8 @@ def make_docs(l, indexname):
         doc["count"] = count
         doc["unique link"] = link
         
-        if doc not in docs:
+        if link_end not in all_links:
+            all_links.append(link_end)
             docs.append(doc)
         
     return docs
