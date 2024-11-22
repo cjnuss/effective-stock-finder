@@ -97,6 +97,7 @@ def make_docs(l, indexname):
         volume = thing[5]
         date = thing[6]
         count = thing[7]
+        link = thing[8]
         #add more here and below
         
         doc = dict() 
@@ -110,9 +111,10 @@ def make_docs(l, indexname):
         doc["volume"] = volume
         doc["date"] = date
         doc["count"] = count
+        doc["unique link"] = link
         
-        #if doc not in docs:
-        docs.append(doc)
+        if doc not in docs:
+            docs.append(doc)
         
     return docs
 
