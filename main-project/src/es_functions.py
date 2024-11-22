@@ -249,9 +249,11 @@ def get_top_ten(es):
         else:
             scores[symbol] = Pvolume * count_ratio
         
-        #print out the score of each stock
-        print(str(symbol) + "   volume: " + str(Pvolume) + "   ratio: " + str(count_ratio))
-
+    #print out the score of each stock in ranking order
+    all_of_them = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)
+    for key, value in all_of_them:
+        print(f"{key}: {value}")
+    
     top_ten = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)[:10]
     top_ten_symbols = [key for key, value in top_ten]
 
@@ -281,7 +283,7 @@ def get_top_ten(es):
 
 
 
-def get_top_25_sell(es):
+def get_top_30_sell(es):
     #get all the documents
     res = es.search (index="bstring_ws", body={"query": {"match_all": {}}},size=10000)
 
