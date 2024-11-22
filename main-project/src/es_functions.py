@@ -285,7 +285,7 @@ def get_top_ten(es):
 
 
 
-def get_top_30_sell(es):
+def get_top_100_sell(es):
     #get all the documents
     res = es.search (index="bstring_ws", body={"query": {"match_all": {}}},size=10000)
 
@@ -303,18 +303,21 @@ def get_top_30_sell(es):
 
 
         scores[symbol] = Svolume * (1.0-count_ratio)
-        
-        #print out the score of each stock
-        print(str(symbol) + "   " + str(scores[symbol]))
 
-    top_ten = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)[:25]
+
+    #print out the score of each stock in ranking order
+    all_of_them = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)
+    for key, value in all_of_them:
+        print(f"{key}: {value}")
+
+    top_ten = sorted(scores.items(), key=lambda x: float(x[1]), reverse=True)[:100]
     top_ten_symbols = [key for key, value in top_ten]
 
     #info is a list with 10 lists, each of them represents a stock
     #each of these stock lists will be a list of things "articles" idk what they're called
     #each article will be a list of 4 things that you gave me 
     info = []
-    for stock in top_ten:
+    for stock in top_ten_symbols:
         res = es.search (index="stockinfo", body={"query": {"match": {"issuer trading symbol": stock}}})
         documents = []
         for doc in res["hits"]["hits"]:
