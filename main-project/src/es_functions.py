@@ -352,15 +352,18 @@ def get_top_100_sell(es):
 def update_database():
     lol = tsv_parser.tsv_to_data()
     es = get_es()
-    
     clear_old_data(es)
+    time.sleep(1)
+    es = get_es()
     clear_es_index(es, "bstring_ws")
     
+    time.sleep(1)
+    es = get_es()
     docs = make_docs(lol, "stockinfo")
     dump_documents(es, docs)
     
+    time.sleep(1)
     es = get_es()
-    
     docs3 = make_bstrings_ws(es)
     dump_documents(es, docs3)
 
